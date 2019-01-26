@@ -1,6 +1,7 @@
 
 task #1:
-    execute data_loading_and_pre_processing.py
+    1: execute data_loading_and_pre_processing.py
+    2: execute prepare_features.py
     
 task #2:
     to do
