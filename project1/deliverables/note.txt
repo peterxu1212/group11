@@ -1,1 +1,6 @@
 
+./code -- the code for all the 3 tasks
+
+./words.txt -- text file with the top-160 most frequent words in the training data, ordered in descending order by frequency/count
+
+./writeup.pdf -- document for the project
