@@ -24,6 +24,7 @@ for data_point in data:
     str_text = data_point['text']
     str_text_lc = str_text.lower()
     
+    #*** to do: deal with punctuation marks?
     word_list = str_text_lc.split()
     
     for word in word_list:
