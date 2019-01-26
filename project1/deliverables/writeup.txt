@@ -1,0 +1,38 @@
+-- Abstract (100-250 words) 
+Summarize the project task and your most important ndings. For exam-
+ple, include sentences like \In this project we investigated the performance of linear regression models for
+predicting comment popularity on Reddit", \We found that ?? features improved performance and that the
+gradient descent approach was faster/slower than the closed-form approach.
+
+
+-- Introduction (5+ sentences) 
+Summarize the project task, the dataset, and your most important nd-
+ings. This should be similar to the abstract but more detailed. You can also include extra background
+information and citations to relevant work (e.g., other papers analyzing Reddit or predicting post/comment
+popularity).
+
+-- Dataset (5+ sentences) 
+Very briey describe the dataset (e.g., size, train/val/test split proportions) and
+how you extracted the text features. Describe the new features you come up with in detail. Highlight any
+possible ethical concerns that might arise when working with a public social media dataset of this variety.
+Note: You do not need to explicitly verify that the data satises the i.i.d. assumption (or any of the other
+formal assumptions for linear regression).
+
+-- Results (7+ sentences, possibly with gures or tables) 
+Describe the results of all the experiments
+mentioned in Task 3 (at a minimum) as well as any other interesting results you nd. At a minimum you
+must report:
+1. A runtime comparison between the gradient descent and closed-form solution approaches.
+2. The train and validation mean-squared errors for a model with no text features, a model that uses the
+text features but is restricted to only using the top-60 words, and a model that uses the full 160 word
+occurrence features.
+3. The train, validation, and test performance of a model that incorporates your new features.
+4
+
+-- Discussion and Conclusion (5+ sentences) 
+Summarize the key takeaways from the project and pos-
+sibly directions for future investigation.
+
+-- Statement of Contributions (1-3 sentences) 
+State the breakdown of the workload across the team
+members.
