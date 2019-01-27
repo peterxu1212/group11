@@ -4,7 +4,7 @@ task #1:
     2: execute prepare_features.py
     
 task #2:
-    to do
+    linear_regression.py
     
 task #3:
     to do
