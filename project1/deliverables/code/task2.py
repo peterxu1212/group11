@@ -213,7 +213,7 @@ with open('../t2_results_tmp3.txt','w', buffering=1) as fout_t2r:
         str_to_write = "elapsed_time = " + str(elapsed_time) + "\n"
         str_to_write += "est_Y = \n" + str(est_Y) + "\n"
         
-        str_to_write = "tmp_mse = " + str(tmp_mse) + "\n"
+        str_to_write += "tmp_mse = " + str(tmp_mse) + "\n"
 
         fout_t2r.write(str_to_write)
         print(str_to_write)
