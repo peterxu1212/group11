@@ -87,7 +87,9 @@ def least_squares_estimate_linear_regression_alg(in_X, in_Y):
 
 
 
-def gradient_descent_linear_regression_alg(in_X, in_Y, epsilon = 10**-6, beta_i = 10**-3, eta_0 = 10**-5):
+#def gradient_descent_linear_regression_alg(in_X, in_Y, epsilon = 10**-6, beta_i = 10**-3, eta_0 = 10**-5):
+    
+def gradient_descent_linear_regression_alg(in_X, in_Y, epsilon = 10**-6, eta_0 = 1.0):
 
     #print("in_X = \n", in_X)
     #print("in_Y = \n", in_Y)
@@ -109,13 +111,13 @@ def gradient_descent_linear_regression_alg(in_X, in_Y, epsilon = 10**-6, beta_i 
     
     
     
-    max_iteration = 500000
+    max_iteration = 1000000
     
     i = 1
+    beta_i = i
+    
     
     """
-    
-    
     beta_i = 0
     eta_0 = 0.1
     """
@@ -137,10 +139,8 @@ def gradient_descent_linear_regression_alg(in_X, in_Y, epsilon = 10**-6, beta_i 
     str_output = "tmp_X_shape[0] = " + str(tmp_X_shape[0]) + "\n"
     str_output += "tmp_X_shape[1] = " + str(tmp_X_shape[1]) + "\n"
     
-    alpha_i = eta_0 / (1.0 + beta_i)
-    
-    alpha_i = alpha_i / tmp_X_shape[0]
-    
+    alpha_i = eta_0 / (1.0 + beta_i) / tmp_X_shape[0]   
+         
     print("hyperparameters: eta_0, epsilon, beta_i, alpha_i : \n")
     
     str_output += "hyperparameters: eta_0, epsilon, beta_i, alpha_i : \n"
@@ -170,6 +170,8 @@ def gradient_descent_linear_regression_alg(in_X, in_Y, epsilon = 10**-6, beta_i 
     #print("W_i = \n", W_i)
     
     
+    tmp_learning_rate_adjust_factor = 1.0
+    
     tmp_l2norm_of_W_diff_last = 0.0
     
     st = time.time()
@@ -183,6 +185,11 @@ def gradient_descent_linear_regression_alg(in_X, in_Y, epsilon = 10**-6, beta_i 
         tmp_XtXW_minus_XtY = np.subtract(XtXW, XtY)
                 
         #print("tmp_XtXW_minus_XtY = \n", tmp_XtXW_minus_XtY)
+        
+        beta_i = i
+        
+        alpha_i = tmp_learning_rate_adjust_factor * eta_0 / (1.0 + beta_i) / tmp_X_shape[0]  
+    
         
         tmp_double_alpha_XtXW_minus_XtY = 2 * alpha_i * tmp_XtXW_minus_XtY
     
@@ -221,7 +228,7 @@ def gradient_descent_linear_regression_alg(in_X, in_Y, epsilon = 10**-6, beta_i 
             
             if i > k and abs(tmp_l2norm_of_W_diff) >= abs(tmp_l2norm_of_W_diff_last):
                 
-                alpha_i *= 10**-1
+                tmp_learning_rate_adjust_factor *= 10**-1
                 print("\n")
                 print("set alpha_i to ", alpha_i, " when i = ", i, " for tmp_l2norm_of_W_diff = ", tmp_l2norm_of_W_diff, " tmp_l2norm_of_W_diff_last = ", tmp_l2norm_of_W_diff_last)
             
