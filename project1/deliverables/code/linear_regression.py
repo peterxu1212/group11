@@ -109,7 +109,7 @@ def gradient_descent_linear_regression_alg(in_X, in_Y, epsilon = 10**-6, beta_i 
     
     
     
-    max_iteration = 1000000
+    max_iteration = 500000
     
     i = 1
     
@@ -126,7 +126,7 @@ def gradient_descent_linear_regression_alg(in_X, in_Y, epsilon = 10**-6, beta_i 
     #alpha_i = 0.01
     
     #checking interval
-    k = 10
+    k = 100
     
     
     tmp_X_shape = in_X.shape
