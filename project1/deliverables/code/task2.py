@@ -135,7 +135,7 @@ with open('../t2_results_tmp3.txt','w', buffering=1) as fout_t2r:
     
     W, str_to_write = lr.least_squares_estimate_linear_regression_alg(X_training_set, Y_training_set)
     #print("lr.least_squares_estimate_linear_regression_alg W = \n", W)
-    str_to_write = "lr.least_squares_estimate_linear_regression_alg W = \n" + str(W) + "\n"
+    str_to_write += "lr.least_squares_estimate_linear_regression_alg W = \n" + str(W) + "\n"
     
     elapsed_time = time.time() - start_time
     str_to_write += "elapsed_time = " + str(elapsed_time) + "\n"
