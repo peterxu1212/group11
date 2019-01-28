@@ -87,7 +87,10 @@ with open('../t2_results_tmp3.txt','w', buffering=1) as fout_t2r:
     start_time = time.time()
     # your code
     
-    W = lr.least_squares_estimate_linear_regression_alg(X, Y)
+    W, str_to_write = lr.least_squares_estimate_linear_regression_alg(X, Y)
+    
+    fout_t2r.write(str_to_write)
+    print(str_to_write)
     
     elapsed_time = time.time() - start_time
     #print("lr.least_squares_estimate_linear_regression_alg W = \n", W)
@@ -135,7 +138,11 @@ with open('../t2_results_tmp3.txt','w', buffering=1) as fout_t2r:
     
     W, str_to_write = lr.least_squares_estimate_linear_regression_alg(X_training_set, Y_training_set)
     #print("lr.least_squares_estimate_linear_regression_alg W = \n", W)
-    str_to_write += "lr.least_squares_estimate_linear_regression_alg W = \n" + str(W) + "\n"
+    fout_t2r.write(str_to_write)
+    print(str_to_write)
+    
+    
+    str_to_write = "lr.least_squares_estimate_linear_regression_alg W = \n" + str(W) + "\n"
     
     elapsed_time = time.time() - start_time
     str_to_write += "elapsed_time = " + str(elapsed_time) + "\n"
@@ -166,50 +173,50 @@ with open('../t2_results_tmp3.txt','w', buffering=1) as fout_t2r:
     beta_power = 1
        
     #for beta_power in range(0, -4, -1):    
-    for beta_power in range(0, -4, -1):
+    #for beta_power in range(0, -4, -1):
     
-        #for epsilon_power in range(-5, -10, -1):
-        for epsilon_power in range(-6, -10, -1):
+    #for epsilon_power in range(-5, -10, -1):
+    for epsilon_power in range(-6, -10, -1):
+    
+        #print("\n\n\n\n")
         
-            #print("\n\n\n\n")
-            
-            str_to_write = "\n\n\n\n"
-    
-            fout_t2r.write(str_to_write)
-            print(str_to_write)
-            
-            
-            start_time = time.time()
-            
-            W, str_to_write = lr.gradient_descent_linear_regression_alg(X_training_set, Y_training_set, 10**epsilon_power, 10**beta_power)
-            
-            fout_t2r.write(str_to_write)
-            print(str_to_write)
-            
-            #print("lr.gradient_descent_linear_regression_alg W = \n", W)
-            
-            str_to_write = "lr.gradient_descent_linear_regression_alg W = \n" + str(W) + "\n"
-    
-            fout_t2r.write(str_to_write)
-            print(str_to_write)
-            
-            elapsed_time = time.time() - start_time
+        str_to_write = "\n\n\n\n"
+
+        fout_t2r.write(str_to_write)
+        print(str_to_write)
         
-            #print("elapsed_time = ", elapsed_time)
-            
-            est_Y = np.dot(X_validation_set, W)
-            tmp_mse = lr.mean_squared_error(est_Y, Y_validation_set)
-            
-            #print("est_Y = \n", est_Y)
-            #print("tmp_mse =", tmp_mse)
-            
-            str_to_write = "elapsed_time = " + str(elapsed_time) + "\n"
-            str_to_write += "est_Y = \n" + str(est_Y) + "\n"
-            
-            str_to_write = "tmp_mse = " + str(tmp_mse) + "\n"
+        
+        start_time = time.time()
+        
+        W, str_to_write = lr.gradient_descent_linear_regression_alg(X_training_set, Y_training_set, 10**epsilon_power)
+        
+        fout_t2r.write(str_to_write)
+        print(str_to_write)
+        
+        #print("lr.gradient_descent_linear_regression_alg W = \n", W)
+        
+        str_to_write = "lr.gradient_descent_linear_regression_alg W = \n" + str(W) + "\n"
+
+        fout_t2r.write(str_to_write)
+        print(str_to_write)
+        
+        elapsed_time = time.time() - start_time
     
-            fout_t2r.write(str_to_write)
-            print(str_to_write)
+        #print("elapsed_time = ", elapsed_time)
+        
+        est_Y = np.dot(X_validation_set, W)
+        tmp_mse = lr.mean_squared_error(est_Y, Y_validation_set)
+        
+        #print("est_Y = \n", est_Y)
+        #print("tmp_mse =", tmp_mse)
+        
+        str_to_write = "elapsed_time = " + str(elapsed_time) + "\n"
+        str_to_write += "est_Y = \n" + str(est_Y) + "\n"
+        
+        str_to_write = "tmp_mse = " + str(tmp_mse) + "\n"
+
+        fout_t2r.write(str_to_write)
+        print(str_to_write)
             
             
                   
