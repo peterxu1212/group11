@@ -74,7 +74,7 @@ def least_squares_estimate_linear_regression_alg(in_X, in_Y):
     out_W = np.dot(XtX_inv, XtY)
     #print("out_W = \n", out_W) 
     
-     et = time.time() - st
+    et = time.time() - st
     
     str_tmp = "least_squares_estimate_linear_regression_alg elapsed time = " + str(et) + " after out_W " + "\n"
     str_output += str_tmp
