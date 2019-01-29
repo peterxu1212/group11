@@ -3,7 +3,7 @@ task #1:
     execute data_loading_and_pre_processing.py
         
 task #2:
-    linear_regression.py
+    implemented in linear_regression.py, do not execute
     
 task #3:
     execute task3.py
