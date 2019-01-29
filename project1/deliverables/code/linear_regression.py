@@ -12,11 +12,13 @@ def mean_squared_error(in_A, in_B):
     
     diff_AB = np.subtract(in_A, in_B)
     
-    print("diff_AB = \n", diff_AB)
+    #print("diff_AB = \n", diff_AB)
 
-    out_mse = np.square(diff_AB).mean()
+    Sigma_Square_of_diff_AB = np.square(diff_AB) 
 
-    return out_mse
+    out_mse = Sigma_Square_of_diff_AB.mean()
+    
+    return out_mse, diff_AB, Sigma_Square_of_diff_AB
 
 def least_squares_estimate_linear_regression_alg(in_X, in_Y):
 
@@ -91,7 +93,7 @@ def least_squares_estimate_linear_regression_alg(in_X, in_Y):
 
 #def gradient_descent_linear_regression_alg(in_X, in_Y, epsilon = 10**-6, beta_i = 10**-3, eta_0 = 10**-5):
     
-def gradient_descent_linear_regression_alg(in_X, in_Y, epsilon = 10**-6, eta_0 = 1.0):
+def gradient_descent_linear_regression_alg(in_X, in_Y, epsilon = 10**-6, eta_0 = 10**-1):
 
     #print("in_X = \n", in_X)
     #print("in_Y = \n", in_Y)
@@ -142,7 +144,7 @@ def gradient_descent_linear_regression_alg(in_X, in_Y, epsilon = 10**-6, eta_0 =
     str_output = "tmp_X_shape[0] = " + str(tmp_X_shape[0]) + "\n"
     str_output += "tmp_X_shape[1] = " + str(tmp_X_shape[1]) + "\n"
     
-    alpha_i = eta_0 / (1.0 + beta_i) / tmp_X_shape[0]   
+    alpha_i = eta_0 / (1.0 + beta_i) / tmp_X_shape[0]
          
     print("hyperparameters: eta_0, epsilon, beta_i, alpha_i : \n")
     
@@ -195,8 +197,25 @@ def gradient_descent_linear_regression_alg(in_X, in_Y, epsilon = 10**-6, eta_0 =
         if i % 100 == 0:
             k_i = k_i + 1
             beta_i = math.pow(2, k_i)
+            
+            print("\n")
+            print("set k_i to ", k_i, " when i = ", i)
+            print("set beta_i to ", beta_i, " when i = ", i)
         
-        alpha_i = tmp_learning_rate_adjust_factor * eta_0 / (1.0 + beta_i) / tmp_X_shape[0]  
+            str_output += "\n"
+            str_output += "set k_i to " + str(k_i) + "\n"
+            str_output += "set beta_i to " + str(beta_i) + "\n"
+            str_output += "when i = " + str(i) + "\n"
+                
+        
+        alpha_i = tmp_learning_rate_adjust_factor * eta_0 / (1.0 + beta_i) / tmp_X_shape[0]
+        if i % 100 == 0:
+            print("set alpha_i to ", alpha_i, " when i = ", i)
+            
+            str_output += "\n"
+            str_output += "set alpha_i to " + str(alpha_i) + "\n"
+
+            str_output += "when i = " + str(i) + "\n"
     
         
         tmp_double_alpha_XtXW_minus_XtY = 2 * alpha_i * tmp_XtXW_minus_XtY
@@ -238,10 +257,10 @@ def gradient_descent_linear_regression_alg(in_X, in_Y, epsilon = 10**-6, eta_0 =
                 
                 tmp_learning_rate_adjust_factor *= 10**-1
                 print("\n")
-                print("set alpha_i to ", alpha_i, " when i = ", i, " for tmp_l2norm_of_W_diff = ", tmp_l2norm_of_W_diff, " tmp_l2norm_of_W_diff_last = ", tmp_l2norm_of_W_diff_last)
+                print("set tmp_learning_rate_adjust_factor to ", tmp_learning_rate_adjust_factor, " when i = ", i, " for tmp_l2norm_of_W_diff = ", tmp_l2norm_of_W_diff, " tmp_l2norm_of_W_diff_last = ", tmp_l2norm_of_W_diff_last)
             
                 str_output += "\n"
-                str_output += "set alpha_i to " + str(alpha_i) + "\n"
+                str_output += "set tmp_learning_rate_adjust_factor to " + str(tmp_learning_rate_adjust_factor) + "\n"
                 str_output += "when i = " + str(i) + "\n"
                 str_output += "tmp_l2norm_of_W_diff = " + str(tmp_l2norm_of_W_diff) + "\n"
                 str_output += "tmp_l2norm_of_W_diff_last = " + str(tmp_l2norm_of_W_diff_last) + "\n"
@@ -269,6 +288,14 @@ def gradient_descent_linear_regression_alg(in_X, in_Y, epsilon = 10**-6, eta_0 =
     print("\n\n")
     
     str_output += "\n\n total iterations i = " + str(i) + "\n\n"
+    
+    str_output += "eta_0 = " + str(eta_0) + "\n"
+    str_output += "epsilon = " + str(epsilon) + "\n"
+    str_output += "beta_i = " + str(beta_i) + "\n"
+    str_output += "alpha_i = " + str(alpha_i) + "\n"
+    str_output += "\n\n"
+    
+    str_output += "k = " + str(k) + "\n\n"
     
     return W_i, str_output
 

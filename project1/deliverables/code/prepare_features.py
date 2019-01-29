@@ -5,7 +5,7 @@ Created on Sat Jan 26 06:28:33 2019
 @author: PeterXu
 """
 
-import json
+#import json
 
 import numpy as np
 
@@ -30,8 +30,8 @@ def generate_wordfeature_and_output(dict_wc, data_set, b_with_word_feature=False
     #X_training_set_Adv = np.array([]).reshape(0, 4)
     #Y_training_set_Adv = np.array([]).reshape(0, 1)
     
-    #for data_point in data_set[:15]:
     for data_point in data_set:
+    #for data_point in data_set[:10]:
         
         f_is_root = 0.0
         f_controversiality = 0.0

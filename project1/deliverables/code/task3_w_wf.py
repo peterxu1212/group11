@@ -23,7 +23,7 @@ import json # we need to use the JSON package to load the data, since the data i
 
 str_to_write = ""
 
-with open('../t3_results.txt','w', buffering=1) as fout_t2r:
+with open('../t3_results_w_wf.txt','w', buffering=1) as fout_t2r:
 
     #str_to_write = k + " " + str(v) + "\n"
     #fout_t2r.write(str_to_write)
@@ -133,10 +133,10 @@ with open('../t3_results.txt','w', buffering=1) as fout_t2r:
         data = json.load(rf_training_set)
         
       
-    X_training_set_Adv, Y_training_set_Adv = pf.generate_wordfeature_and_output(wordcount, data, False, 0, False, 0)
+    #X_training_set_Adv, Y_training_set_Adv = pf.generate_wordfeature_and_output(wordcount, data, False, 0, False, 0)
     
 
-    #X_training_set_Adv, Y_training_set_Adv = pf.generate_wordfeature_and_output(wordcount, data, True, 160, False, 0)
+    X_training_set_Adv, Y_training_set_Adv = pf.generate_wordfeature_and_output(wordcount, data, True, 160, False, 0)
             
             
             
@@ -174,10 +174,10 @@ with open('../t3_results.txt','w', buffering=1) as fout_t2r:
         data = json.load(rf_validation_set)
         
       
-    X_validation_set_Adv, Y_validation_set_Adv = pf.generate_wordfeature_and_output(wordcount, data, False, 0, False, 0)
+    #X_validation_set_Adv, Y_validation_set_Adv = pf.generate_wordfeature_and_output(wordcount, data, False, 0, False, 0)
     
 
-    #X_training_set_Adv, Y_training_set_Adv = pf.generate_wordfeature_and_output(wordcount, data, True, 160, False, 0)
+    X_validation_set_Adv, Y_validation_set_Adv = pf.generate_wordfeature_and_output(wordcount, data, True, 160, False, 0)
             
             
             
@@ -279,9 +279,9 @@ with open('../t3_results.txt','w', buffering=1) as fout_t2r:
     
     #print("elapsed_time = ", elapsed_time)
     
-    
-    
-    
+
+
+
     start_time = time.time()
     
     est_Y = np.dot(X_training_set_Adv, W)
@@ -308,14 +308,14 @@ with open('../t3_results.txt','w', buffering=1) as fout_t2r:
     
     fout_t2r.write(str_to_write)
     print(str_to_write)
-    
-    
-    
-    
-    
-    
-    
-    
+
+
+
+
+
+
+
+
     start_time = time.time()
     
     est_Y = np.dot(X_validation_set_Adv, W)
@@ -329,9 +329,9 @@ with open('../t3_results.txt','w', buffering=1) as fout_t2r:
     
     
     str_to_write = "tmp_mse for validation set = " + str(tmp_mse) + "\n\n\n\n"
-    str_to_write += "mean_squared_error elapsed_time = " + str(elapsed_time) + "\n"
-        
+    str_to_write += "mean_squared_error elapsed_time = " + str(elapsed_time) + "\n"   
     
+
     Sigma_Square_of_diff_AB = np.sort(Sigma_Square_of_diff_AB, axis=None, kind='mergesort')
     str_to_write += "Sigma_Square_of_diff_AB = \n" + str(Sigma_Square_of_diff_AB) + "\n" + str(Sigma_Square_of_diff_AB.shape) + "\n\n"
 
@@ -345,6 +345,7 @@ with open('../t3_results.txt','w', buffering=1) as fout_t2r:
     
     
     
+    """
     
     # -2 ~ -8
     epsilon_power = -2
@@ -384,7 +385,7 @@ with open('../t3_results.txt','w', buffering=1) as fout_t2r:
     
         #print("elapsed_time = ", elapsed_time)
         
-        
+
         
         est_Y = np.dot(X_training_set_Adv, W)
         tmp_mse, diff_AB, Sigma_Square_of_diff_AB = lr.mean_squared_error(est_Y, Y_training_set_Adv)
@@ -411,7 +412,7 @@ with open('../t3_results.txt','w', buffering=1) as fout_t2r:
         
         
         
-        
+
         est_Y = np.dot(X_validation_set_Adv, W)
         tmp_mse, diff_AB, Sigma_Square_of_diff_AB = lr.mean_squared_error(est_Y, Y_validation_set_Adv)
         
@@ -433,7 +434,7 @@ with open('../t3_results.txt','w', buffering=1) as fout_t2r:
         fout_t2r.write(str_to_write)
         print(str_to_write)
             
-            
+    """        
                   
     
     
