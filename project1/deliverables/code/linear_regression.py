@@ -3,6 +3,8 @@
 
 import numpy as np
 
+import math
+
 import time
 
 
@@ -115,6 +117,7 @@ def gradient_descent_linear_regression_alg(in_X, in_Y, epsilon = 10**-6, eta_0 =
     
     i = 1
     beta_i = i
+    k_i = 0
     
     
     """
@@ -186,7 +189,12 @@ def gradient_descent_linear_regression_alg(in_X, in_Y, epsilon = 10**-6, eta_0 =
                 
         #print("tmp_XtXW_minus_XtY = \n", tmp_XtXW_minus_XtY)
         
-        beta_i = i
+        #beta_i = i
+        #k_i = i // 10
+        #beta_i = math.pow(2, k_i)
+        if i % 100 == 0:
+            k_i = k_i + 1
+            beta_i = math.pow(2, k_i)
         
         alpha_i = tmp_learning_rate_adjust_factor * eta_0 / (1.0 + beta_i) / tmp_X_shape[0]  
     
