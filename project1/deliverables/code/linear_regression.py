@@ -93,7 +93,7 @@ def least_squares_estimate_linear_regression_alg(in_X, in_Y):
 
 #def gradient_descent_linear_regression_alg(in_X, in_Y, epsilon = 10**-6, beta_i = 10**-3, eta_0 = 10**-5):
     
-def gradient_descent_linear_regression_alg(in_X, in_Y, epsilon = 10**-6, eta_0 = 10**-1):
+def gradient_descent_linear_regression_alg(in_X, in_Y, epsilon = 10**-6, eta_0 = 10**-1, distance_rate_power=4.0):
 
     #print("in_X = \n", in_X)
     #print("in_Y = \n", in_Y)
@@ -133,7 +133,14 @@ def gradient_descent_linear_regression_alg(in_X, in_Y, epsilon = 10**-6, eta_0 =
     #alpha_i = 0.01
     
     #checking interval
-    k = 100
+    
+    tmp_count_after_Robbins_Monroe_stop = 0
+    
+    T_k = 10
+    
+    T_Robbins_Monroe = 100
+    
+    T_huge_enough = 1000
     
     
     tmp_X_shape = in_X.shape
@@ -154,16 +161,18 @@ def gradient_descent_linear_regression_alg(in_X, in_Y, epsilon = 10**-6, eta_0 =
     print("epsilon = ", epsilon)    
     print("beta_i = ", beta_i)   
     print("alpha_i = ", alpha_i)
+    print("distance_rate_power = ", distance_rate_power)
     
-    print("k = ", k)
+    print("T_k = ", T_k)
    
     str_output += "eta_0 = " + str(eta_0) + "\n"
     str_output += "epsilon = " + str(epsilon) + "\n"
     str_output += "beta_i = " + str(beta_i) + "\n"
     str_output += "alpha_i = " + str(alpha_i) + "\n"
+    str_output += "distance_rate_power = " + str(distance_rate_power) + "\n"
     str_output += "\n\n"
     
-    str_output += "k = " + str(k) + "\n\n"
+    str_output += "T_k = " + str(T_k) + "\n\n"
     
     
     #init_W = np.ones((10, 1))
@@ -194,10 +203,16 @@ def gradient_descent_linear_regression_alg(in_X, in_Y, epsilon = 10**-6, eta_0 =
         #beta_i = i
         #k_i = i // 10
         #beta_i = math.pow(2, k_i)
-        if i % 100 == 0:
+        if i % T_Robbins_Monroe == 0:
             k_i = k_i + 1
-            beta_i = math.pow(2, k_i)
             
+            if (tmp_learning_rate_adjust_factor * eta_0 / (1.0 + beta_i)) >= (epsilon * 10.0**distance_rate_power):
+                
+                beta_i = math.pow(2, k_i)
+            else:
+                #beta_i should not change any more once alpha_i is small enough
+                tmp_count_after_Robbins_Monroe_stop += T_Robbins_Monroe
+                        
             print("\n")
             print("set k_i to ", k_i, " when i = ", i)
             print("set beta_i to ", beta_i, " when i = ", i)
@@ -209,7 +224,9 @@ def gradient_descent_linear_regression_alg(in_X, in_Y, epsilon = 10**-6, eta_0 =
                 
         
         alpha_i = tmp_learning_rate_adjust_factor * eta_0 / (1.0 + beta_i) / tmp_X_shape[0]
-        if i % 100 == 0:
+        
+        
+        if i % T_Robbins_Monroe == 0:
             print("set alpha_i to ", alpha_i, " when i = ", i)
             
             str_output += "\n"
@@ -239,6 +256,9 @@ def gradient_descent_linear_regression_alg(in_X, in_Y, epsilon = 10**-6, eta_0 =
         W_i = W_i_plus_1
         
         if abs(tmp_l2norm_of_W_diff) < epsilon:
+            
+            print("quit for tmp_l2norm_of_W_diff = ", tmp_l2norm_of_W_diff, " < epsilon when i = ", i)
+            str_output += "quit for tmp_l2norm_of_W_diff = " + str(tmp_l2norm_of_W_diff) + " < epsilon when i = " + str(i) + "\n\n"            
             break
         
         if max_iteration < i:
@@ -246,31 +266,43 @@ def gradient_descent_linear_regression_alg(in_X, in_Y, epsilon = 10**-6, eta_0 =
             str_output += "quit when exceed max_iteration: " + str(max_iteration) + "\n"
             break
         
-        if i % k == 0:
+        if i % T_k == 0 and i % T_Robbins_Monroe != 0:
             #print("tmp_l2norm_of_W_diff = ", tmp_l2norm_of_W_diff)
             #print("tmp_l2norm_of_W_diff_last = ", tmp_l2norm_of_W_diff_last)
             
             #str_output += "tmp_l2norm_of_W_diff = " + str(tmp_l2norm_of_W_diff) + "\n"
             #str_output += "tmp_l2norm_of_W_diff_last = " + str(tmp_l2norm_of_W_diff_last) + "\n"            
             
-            if i > k and abs(tmp_l2norm_of_W_diff) >= abs(tmp_l2norm_of_W_diff_last):
+            if i > T_k:
+                if abs(tmp_l2norm_of_W_diff) >= abs(tmp_l2norm_of_W_diff_last):
                 
-                tmp_learning_rate_adjust_factor *= 10**-1
-                print("\n")
-                print("set tmp_learning_rate_adjust_factor to ", tmp_learning_rate_adjust_factor, " when i = ", i, " for tmp_l2norm_of_W_diff = ", tmp_l2norm_of_W_diff, " tmp_l2norm_of_W_diff_last = ", tmp_l2norm_of_W_diff_last)
-            
-                str_output += "\n"
-                str_output += "set tmp_learning_rate_adjust_factor to " + str(tmp_learning_rate_adjust_factor) + "\n"
-                str_output += "when i = " + str(i) + "\n"
-                str_output += "tmp_l2norm_of_W_diff = " + str(tmp_l2norm_of_W_diff) + "\n"
-                str_output += "tmp_l2norm_of_W_diff_last = " + str(tmp_l2norm_of_W_diff_last) + "\n"
+                    tmp_learning_rate_adjust_factor *= 10**-1
+                    print("\n")
+                    print("set tmp_learning_rate_adjust_factor to ", tmp_learning_rate_adjust_factor, " when i = ", i, " for tmp_l2norm_of_W_diff = ", tmp_l2norm_of_W_diff, " tmp_l2norm_of_W_diff_last = ", tmp_l2norm_of_W_diff_last)
                 
-            
+                    str_output += "\n"
+                    str_output += "set tmp_learning_rate_adjust_factor to " + str(tmp_learning_rate_adjust_factor) + "\n"
+                    str_output += "when i = " + str(i) + "\n"
+                    str_output += "tmp_l2norm_of_W_diff = " + str(tmp_l2norm_of_W_diff) + "\n"
+                    str_output += "tmp_l2norm_of_W_diff_last = " + str(tmp_l2norm_of_W_diff_last) + "\n"
+                else:
+                    if tmp_count_after_Robbins_Monroe_stop >= T_huge_enough:
+                        tmp_count_after_Robbins_Monroe_stop = 0
+                        
+                        tmp_learning_rate_adjust_factor *= 0.5
+                        print("\n")
+                        print("set tmp_learning_rate_adjust_factor to ", tmp_learning_rate_adjust_factor, " when i = ", i, " for tmp_count_after_Robbins_Monroe_stop exceeds T_huge_enough = ", T_huge_enough)
+                    
+                        str_output += "\n"
+                        str_output += "set tmp_learning_rate_adjust_factor to " + str(tmp_learning_rate_adjust_factor) + "\n"
+                        str_output += "when i = " + str(i) + "\n"
+                        str_output += "for tmp_count_after_Robbins_Monroe_stop exceeds T_huge_enough = " + str(T_huge_enough) + "\n"
+                        
             
             tmp_l2norm_of_W_diff_last = tmp_l2norm_of_W_diff
         
         
-        if i % 50000 == 0:
+        if i % T_huge_enough == 0:
             et = time.time() - st
             print("elapsed time = ", et, " when iteration i = ", i)
             str_output += "elapsed time = " + str(et) + " when iteration i = " + str(i) + "\n"
@@ -289,13 +321,16 @@ def gradient_descent_linear_regression_alg(in_X, in_Y, epsilon = 10**-6, eta_0 =
     
     str_output += "\n\n total iterations i = " + str(i) + "\n\n"
     
-    str_output += "eta_0 = " + str(eta_0) + "\n"
-    str_output += "epsilon = " + str(epsilon) + "\n"
     str_output += "beta_i = " + str(beta_i) + "\n"
-    str_output += "alpha_i = " + str(alpha_i) + "\n"
+    str_output += "alpha_i = " + str(alpha_i) + "\n\n"
+    
+    str_output += "eta_0 = " + str(eta_0) + "\n"
+    str_output += "epsilon = " + str(epsilon) + "\n"    
+    str_output += "distance_rate_power = " + str(distance_rate_power) + "\n"
+    
     str_output += "\n\n"
     
-    str_output += "k = " + str(k) + "\n\n"
+    str_output += "T_k = " + str(T_k) + "\n\n"
     
     return W_i, str_output
 
