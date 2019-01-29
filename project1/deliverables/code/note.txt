@@ -1,10 +1,9 @@
 
 task #1:
-    1: execute data_loading_and_pre_processing.py
-    2: execute prepare_features.py
-    
+    execute data_loading_and_pre_processing.py
+        
 task #2:
     linear_regression.py
     
 task #3:
-    to do
+    execute task3.py
