@@ -77,6 +77,12 @@ with open('../words_300.txt','w') as fout_words:
         print(k, v)
         str_to_write = k + " " + str(v) + "\n"
         fout_words.write(str_to_write)
+        
+with open('../words_260.txt','w') as fout_words:
+    for k, v in wordcount[:260]:
+        print(k, v)
+        str_to_write = k + " " + str(v) + "\n"
+        fout_words.write(str_to_write)
 
 
 with open('../words_160.txt','w') as fout_words:
@@ -96,6 +102,13 @@ wordcount_without_punctuation = sorted(wordcount_without_punctuation.items(), ke
 
 with open('../words_300_without_punctuation.txt','w') as fout_words_wo_punctuation:
     for k, v in wordcount_without_punctuation[:300]:
+        print(k, v)
+        str_to_write = k + " " + str(v) + "\n"
+        fout_words_wo_punctuation.write(str_to_write)
+
+
+with open('../words_260_without_punctuation.txt','w') as fout_words_wo_punctuation:
+    for k, v in wordcount_without_punctuation[:260]:
         print(k, v)
         str_to_write = k + " " + str(v) + "\n"
         fout_words_wo_punctuation.write(str_to_write)

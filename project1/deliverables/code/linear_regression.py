@@ -568,7 +568,7 @@ def gradient_descent_linear_regression_alg_old(in_X, in_Y, epsilon = 10**-6, eta
 
 
         i += 1
-    return W_i
+    return W_i, str_output
 
 
 
