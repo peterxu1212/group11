@@ -365,12 +365,13 @@ with open('../t3_results.txt','w', buffering=1) as fout_t2r:
 
     #TRM pow: 1 ~ 6
 
-
+    W_closed, str_to_write = lr.least_squares_estimate_linear_regression_alg(X_validation_set_Adv, Y_validation_set_Adv)
 
     list_T_Robbins_Monroe_pow = []
     list_trn_mse = []
     list_val_mse = []
     list_elapsed_time = []
+    list_W_MSE = []
 
     epsilon_power = -6
 
@@ -390,6 +391,9 @@ with open('../t3_results.txt','w', buffering=1) as fout_t2r:
 
         list_elapsed_time.append(elapsed_time)
 
+        W_MSE, Q1, Q2 = lr.mean_squared_error(W, W_closed)
+        list_W_MSE.append(W_MSE)
+
         est_Y = np.dot(X_validation_set_Adv, W)
         val_mse, diff_AB, Sigma_Square_of_diff_AB = lr.mean_squared_error(est_Y, Y_validation_set_Adv)
         est_Y = np.dot(X_training_set_Adv, W)
@@ -402,6 +406,9 @@ with open('../t3_results.txt','w', buffering=1) as fout_t2r:
     plt.title("Plot of validation MSE w.r.t log T")
     plt.legend(["Gradient descent validation MSE",'Closed form MSE'])
     plt.show()
+    plt.plot(list_T_Robbins_Monroe_pow, list_W_MSE, "bo")
+    plt.title("Plot of MSE of W w.r.t log T")
+    plt.show()
     plt.plot(list_T_Robbins_Monroe_pow, list_elapsed_time, "bo")
     plt.title("Plot of running time w.r.t log T")
     plt.show()
@@ -411,6 +418,7 @@ with open('../t3_results.txt','w', buffering=1) as fout_t2r:
     list_trn_mse = []
     list_val_mse = []
     list_elapsed_time = []
+    list_W_MSE = []
 
     epsilon_power = -6
 
@@ -431,6 +439,9 @@ with open('../t3_results.txt','w', buffering=1) as fout_t2r:
 
         list_elapsed_time.append(elapsed_time)
 
+        W_MSE, Q1, Q2 = lr.mean_squared_error(W, W_closed)
+        list_W_MSE.append(W_MSE)
+
         est_Y = np.dot(X_validation_set_Adv, W)
         val_mse, diff_AB, Sigma_Square_of_diff_AB = lr.mean_squared_error(est_Y, Y_validation_set_Adv)
         est_Y = np.dot(X_training_set_Adv, W)
@@ -443,6 +454,9 @@ with open('../t3_results.txt','w', buffering=1) as fout_t2r:
     plt.title("Plot of validation MSE w.r.t log epsilon")
     plt.legend(["Gradient descent validation MSE",'Closed form MSE'])
     plt.show()
+    plt.plot(list_epsilon_power, list_W_MSE, "bo")
+    plt.title("Plot of MSE of W w.r.t log epsilon")
+    plt.show()
     plt.plot(list_epsilon_power, list_elapsed_time, "bo")
     plt.title("Plot of running time w.r.t log epsilon")
     plt.show()
@@ -451,6 +465,7 @@ with open('../t3_results.txt','w', buffering=1) as fout_t2r:
     list_trn_mse = []
     list_val_mse = []
     list_elapsed_time = []
+    list_W_MSE = []
 
     epsilon_power = -5
     T_Robbins_Monroe_pow = 2
@@ -467,6 +482,9 @@ with open('../t3_results.txt','w', buffering=1) as fout_t2r:
 
         list_elapsed_time.append(elapsed_time)
 
+        W_MSE, Q1, Q2 = lr.mean_squared_error(W, W_closed)
+        list_W_MSE.append(W_MSE)
+
         est_Y = np.dot(X_validation_set_Adv, W)
         val_mse, diff_AB, Sigma_Square_of_diff_AB = lr.mean_squared_error(est_Y, Y_validation_set_Adv)
         est_Y = np.dot(X_training_set_Adv, W)
@@ -479,6 +497,9 @@ with open('../t3_results.txt','w', buffering=1) as fout_t2r:
     plt.title("Plot of validation MSE w.r.t log eta")
     plt.legend(["Gradient descent validation MSE",'Closed form MSE'])
     plt.show()
+    plt.plot(list_eta_power, list_W_MSE, "bo")
+    plt.title("Plot of MSE of W w.r.t log eta")
+    plt.show()
     plt.plot(list_eta_power, list_elapsed_time, "bo")
     plt.title("Plot of running time w.r.t log eta")
     plt.show()
@@ -489,6 +510,7 @@ with open('../t3_results.txt','w', buffering=1) as fout_t2r:
 
     start_time = time.time()
     W = lr.gradient_descent_linear_regression_alg_old(X_training_set_Adv, Y_training_set_Adv, 10**epsilon_power, 10**eta_power, 10**T_Robbins_Monroe_pow)
+    old_W_MSE, Q1, Q2 = lr.mean_squared_error(W, W_closed)
     old_elapsed_time = time.time() - start_time
 
     est_Y = np.dot(X_validation_set_Adv, W)
@@ -499,6 +521,7 @@ with open('../t3_results.txt','w', buffering=1) as fout_t2r:
     list_trn_mse = []
     list_val_mse = []
     list_elapsed_time = []
+    list_W_MSE = []
 
     for distance_rate_power in range(2, 8, 1):
 
@@ -513,6 +536,9 @@ with open('../t3_results.txt','w', buffering=1) as fout_t2r:
 
         list_elapsed_time.append(elapsed_time)
 
+        W_MSE, Q1, Q2 = lr.mean_squared_error(W, W_closed)
+        list_W_MSE.append(W_MSE)
+
         est_Y = np.dot(X_validation_set_Adv, W)
         val_mse, diff_AB, Sigma_Square_of_diff_AB = lr.mean_squared_error(est_Y, Y_validation_set_Adv)
         est_Y = np.dot(X_training_set_Adv, W)
@@ -525,6 +551,11 @@ with open('../t3_results.txt','w', buffering=1) as fout_t2r:
     plt.plot([2, 7],[old_MSE, old_MSE])
     plt.title("Plot of validation MSE w.r.t log DRP")
     plt.legend(["New gradient descent validation MSE",'Closed form MSE', 'Gradient descent MSE'])
+    plt.show()
+    plt.plot(list_distance_rate_power, list_W_MSE, "bo")
+    plt.plot([2, 7],[old_W_MSE, old_W_MSE])
+    plt.legend(["New gradient descent MSE of W", 'Gradient descent MSE of W'])
+    plt.title("Plot of MSE of W w.r.t log eta")
     plt.show()
     plt.plot(list_distance_rate_power, list_elapsed_time, "bo")
     plt.plot([2,7],[old_elapsed_time, old_elapsed_time])
