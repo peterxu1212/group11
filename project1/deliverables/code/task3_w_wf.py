@@ -28,6 +28,7 @@ with open('../t3_results_w_wf.txt','w', buffering=1) as fout_t2r:
     #str_to_write = k + " " + str(v) + "\n"
     #fout_t2r.write(str_to_write)
 
+    """
     #X = np.array([[0.86, 1], [0.09, 1], [-0.85, 1], [0.87, 1], [-0.44, 1], [-0.43, 1], [-1.10, 1], [0.40, 1], [-0.96, 1], [0.17, 1]])
     #X = np.array([[0.86], [0.09], [-0.85], [0.87], [-0.44], [-0.43], [-1.10], [0.40], [-0.96], [0.17]])
     
@@ -89,7 +90,7 @@ with open('../t3_results_w_wf.txt','w', buffering=1) as fout_t2r:
     
     fout_t2r.write(str_to_write)
     print(str_to_write)
-    
+    """
 
 
     # retrieve word counts

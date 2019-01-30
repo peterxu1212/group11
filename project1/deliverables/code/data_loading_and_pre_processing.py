@@ -4,6 +4,9 @@ import json # we need to use the JSON package to load the data, since the data i
 import re
 
 
+import prepare_features as pf
+
+
 with open("../proj1_data.json", "r") as read_file:
     data = json.load(read_file)
     
@@ -26,7 +29,7 @@ str_output = ""
 
 wordcount = {}
 
-wordcount_without_punctuation = {}
+wordcount_wo_punctuation_and_sw = {}
     
 for data_point in data:
     str_text = data_point['text']
@@ -43,7 +46,7 @@ for data_point in data:
             wordcount[word] += 1
     
     #***deal with punctuation marks?    
-    str_text_lc_without_punctuation = re.sub(r'[^\w\s]', ' ', str_text_lc)
+    str_text_lc_without_punctuation = re.sub(r'[^\w\s]', ' ', str_text_lc)   
     
     #if str_text_lc_without_punctuation != str_text_lc:
         #print(str_text_lc_without_punctuation, " is different from ", str_text_lc)
@@ -51,11 +54,13 @@ for data_point in data:
     
     word_list_without_punctuation = str_text_lc_without_punctuation.split()
     
-    for word_wo_punctation in word_list_without_punctuation:
-        if word_wo_punctation not in wordcount_without_punctuation:
-            wordcount_without_punctuation[word_wo_punctation] = 1
+    word_list_wo_punctuation_and_sw = pf.remove_stop_words(word_list_without_punctuation)
+    
+    for word_wo_punctation_and_sw in word_list_wo_punctuation_and_sw:
+        if word_wo_punctation_and_sw not in wordcount_wo_punctuation_and_sw:
+            wordcount_wo_punctuation_and_sw[word_wo_punctation_and_sw] = 1
         else:
-            wordcount_without_punctuation[word_wo_punctation] += 1
+            wordcount_wo_punctuation_and_sw[word_wo_punctation_and_sw] += 1
     
     
     data_point['text'] = str_text_lc
@@ -96,35 +101,35 @@ with open('../words_60.txt','w') as fout_words:
         fout_words.write(str_to_write)
 
 
-wordcount_without_punctuation = sorted(wordcount_without_punctuation.items(), key = lambda x:x[1], reverse=True)
+wordcount_wo_punctuation_and_sw = sorted(wordcount_wo_punctuation_and_sw.items(), key = lambda x:x[1], reverse=True)
 
-with open('../words_300_without_punctuation.txt','w') as fout_words_wo_punctuation:
-    for k, v in wordcount_without_punctuation[:300]:
+with open('../words_300_adv.txt','w') as fout_words_wo_punctuation_and_sw:
+    for k, v in wordcount_wo_punctuation_and_sw[:300]:
         print(k, v)
         str_to_write = k + " " + str(v) + "\n"
-        fout_words_wo_punctuation.write(str_to_write)
+        fout_words_wo_punctuation_and_sw.write(str_to_write)
 
 
-with open('../words_260_without_punctuation.txt','w') as fout_words_wo_punctuation:
-    for k, v in wordcount_without_punctuation[:260]:
+with open('../words_260_adv.txt','w') as fout_words_wo_punctuation_and_sw:
+    for k, v in wordcount_wo_punctuation_and_sw[:260]:
         print(k, v)
         str_to_write = k + " " + str(v) + "\n"
-        fout_words_wo_punctuation.write(str_to_write)
+        fout_words_wo_punctuation_and_sw.write(str_to_write)
 
 
 
-with open('../words_160_without_punctuation.txt','w') as fout_words_wo_punctuation:
-    for k, v in wordcount_without_punctuation[:160]:
+with open('../words_160_adv.txt','w') as fout_words_wo_punctuation_and_sw:
+    for k, v in wordcount_wo_punctuation_and_sw[:160]:
         print(k, v)
         str_to_write = k + " " + str(v) + "\n"
-        fout_words_wo_punctuation.write(str_to_write)
+        fout_words_wo_punctuation_and_sw.write(str_to_write)
 
 
-with open('../words_60_without_punctuation.txt','w') as fout_words_wo_punctuation:
-    for k, v in wordcount_without_punctuation[:60]:
+with open('../words_60_adv.txt','w') as fout_words_wo_punctuation_and_sw:
+    for k, v in wordcount_wo_punctuation_and_sw[:60]:
         print(k, v)
         str_to_write = k + " " + str(v) + "\n"
-        fout_words_wo_punctuation.write(str_to_write)
+        fout_words_wo_punctuation_and_sw.write(str_to_write)
 
 
 # Split the data

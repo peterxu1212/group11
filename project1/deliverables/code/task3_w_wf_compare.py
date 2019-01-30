@@ -20,6 +20,8 @@ import json # we need to use the JSON package to load the data, since the data i
 
 str_for_statistics = ""
 
+stat_data = []
+
 
 str_to_write = ""
 
@@ -106,24 +108,26 @@ with open('../t3_results_w_wf_compare.txt','w', buffering=1) as fout_t2r:
 
 
 
-    for word_file_name in ("words", "words_60", "words_160", "words_260", "words_300", "words_60_without_punctuation", "words_160_without_punctuation", "words_260_without_punctuation", "words_300_without_punctuation"):
+    for word_file_name in ("words", "words_60", "words_160", "words_260", "words_300", "words_60_adv", "words_160_adv", "words_260_adv", "words_300_adv"):
 
         i_len_word_feature = 0
         b_with_wf = False
         
+        #include also sw
         b_without_punctuation = False
+        b_without_stopwords = False
         
         if word_file_name != "words":
             
             b_with_wf = True
-            
-            #w1, w2, w3, w4 = word_file_name.split('_')
+                        
             wlist = word_file_name.split('_')
             
             i_len_word_feature = int(wlist[1])
                       
-            if len(wlist) >=4:
+            if len(wlist) >=3:
                 b_without_punctuation = True
+                b_without_stopwords = True
                 
         
         
@@ -164,6 +168,10 @@ with open('../t3_results_w_wf_compare.txt','w', buffering=1) as fout_t2r:
         X_validation_set_Adv = np.array([])
         Y_validation_set_Adv = np.array([])
     
+        
+        running_stat_item = {}
+        
+    
         start_time = time.time()
     
         # generate feature for training set
@@ -173,7 +181,7 @@ with open('../t3_results_w_wf_compare.txt','w', buffering=1) as fout_t2r:
             data_training_set = json.load(rf_training_set)
             
                    
-        X_training_set_Adv, Y_training_set_Adv = pf.generate_wordfeature_and_output(wordcount, data_training_set, b_with_wf, i_len_word_feature, False, 0, b_without_punctuation)
+        X_training_set_Adv, Y_training_set_Adv, str_output = pf.generate_wordfeature_and_output(wordcount, data_training_set, b_with_wf, i_len_word_feature, False, 0, b_without_punctuation, False, False, False, False, b_without_stopwords)
                 
         #print(str_is_root, str_controversiality, str_children, str_popularity_score)
                 
@@ -185,11 +193,16 @@ with open('../t3_results_w_wf_compare.txt','w', buffering=1) as fout_t2r:
         
         str_to_write += "Y_training_set_Adv = \n" + str(Y_training_set_Adv) + "\n" + str(Y_training_set_Adv.shape) + "\n"
         
+        str_to_write += str_output
+        
         fout_t2r.write(str_to_write)
         print(str_to_write)
         
         
         elapsed_time = time.time() - start_time
+        
+        running_stat_item['pre_alg_runtime'] = elapsed_time
+        
         #print("lr.least_squares_estimate_linear_regression_alg W = \n", W)
         #print("elapsed_time = ", elapsed_time)
         
@@ -210,7 +223,7 @@ with open('../t3_results_w_wf_compare.txt','w', buffering=1) as fout_t2r:
             
           
         #X_validation_set_Adv, Y_validation_set_Adv = pf.generate_wordfeature_and_output(wordcount, data, False, 0, False, 0)
-        X_validation_set_Adv, Y_validation_set_Adv = pf.generate_wordfeature_and_output(wordcount, data_validation_set, b_with_wf, i_len_word_feature, False, 0, b_without_punctuation)
+        X_validation_set_Adv, Y_validation_set_Adv, str_output = pf.generate_wordfeature_and_output(wordcount, data_validation_set, b_with_wf, i_len_word_feature, False, 0, b_without_punctuation, False, False, False, False, b_without_stopwords)
                 
         #print(str_is_root, str_controversiality, str_children, str_popularity_score)
                 
@@ -222,11 +235,17 @@ with open('../t3_results_w_wf_compare.txt','w', buffering=1) as fout_t2r:
         
         str_to_write += "Y_validation_set_Adv = \n" + str(Y_validation_set_Adv) + "\n" + str(Y_validation_set_Adv.shape) + "\n"
         
+        
+        str_to_write += str_output
+        
         fout_t2r.write(str_to_write)
         print(str_to_write)
         
         
         elapsed_time = time.time() - start_time
+                
+        running_stat_item['pre_alg_runtime'] += elapsed_time
+        
         #print("lr.least_squares_estimate_linear_regression_alg W = \n", W)
         #print("elapsed_time = ", elapsed_time)
         
@@ -244,14 +263,18 @@ with open('../t3_results_w_wf_compare.txt','w', buffering=1) as fout_t2r:
         str_tmp += "i_len_word_feature = " + str(i_len_word_feature) + "\n"                
         str_tmp += "b_with_wf = " + str(b_with_wf) + "\n"                
         str_tmp += "b_without_punctuation = " + str(b_without_punctuation) + "\n"
+        str_tmp += "b_without_stopwords = " + str(b_without_stopwords) + "\n"
+        
+        
+        
+        print(str_tmp)
+        fout_t2r.write(str_tmp)
         
         
         str_to_write = "\n\n\n\n\n\n\n\n" + "for training and validation \n\n ===========!!!!===========\n\n"
         fout_t2r.write(str_to_write)
         print(str_to_write)
         
-        print(str_tmp)
-        fout_t2r.write(str_tmp)
         
         
         start_time = time.time()
@@ -263,7 +286,35 @@ with open('../t3_results_w_wf_compare.txt','w', buffering=1) as fout_t2r:
         
         elapsed_time = time.time() - start_time
         
+        
+        
+        running_stat_item['desc'] = "least_squares_estimate_linear_regression_alg"
+        
+        
+        running_stat_item['failure'] = 0
+        
+            
+        running_stat_item['i_word_count_feature_count'] = i_len_word_feature            
+        running_stat_item['b_with_word_count_feature'] = b_with_wf
+        running_stat_item['b_without_punctuation'] = b_without_punctuation
+        running_stat_item['b_without_stopwords'] = b_without_stopwords  
+        
+        
+        running_stat_item['alg_runtime'] = elapsed_time
+        
         if W.size == 0:
+            
+            
+            running_stat_item['failure'] = 1
+            
+            
+            running_stat_item['mse_for_training'] = 99999	
+            running_stat_item['mse_for_validation'] = 99999
+            
+            
+            stat_data.append(running_stat_item)
+            
+            
             str_tmp = "\n\n!!!!!! Skip, Some Exception or Error may have happend when execute least_squares_estimate_linear_regression_alg \n"
             str_tmp += "for X_training_set_Adv = \n" + str(X_training_set_Adv) + "\n\n"
             str_tmp += "and Y_training_set_Adv = \n" + str(Y_training_set_Adv) + "\n\n"
@@ -276,7 +327,10 @@ with open('../t3_results_w_wf_compare.txt','w', buffering=1) as fout_t2r:
         
             str_tmp += "i_len_word_feature = " + str(i_len_word_feature) + "\n"                
             str_tmp += "b_with_wf = " + str(b_with_wf) + "\n"                
-            str_tmp += "b_without_punctuation = " + str(b_without_punctuation) + "\n"        
+            str_tmp += "b_without_punctuation = " + str(b_without_punctuation) + "\n"
+            str_tmp += "b_without_stopwords = " + str(b_without_stopwords) + "\n"
+            
+            
 
             str_tmp += "alg runtime = " + str(elapsed_time) + "\n"
          
@@ -312,7 +366,9 @@ with open('../t3_results_w_wf_compare.txt','w', buffering=1) as fout_t2r:
         
         str_tmp += "i_len_word_feature = " + str(i_len_word_feature) + "\n"                
         str_tmp += "b_with_wf = " + str(b_with_wf) + "\n"                
-        str_tmp += "b_without_punctuation = " + str(b_without_punctuation) + "\n"        
+        str_tmp += "b_without_punctuation = " + str(b_without_punctuation) + "\n"
+        str_tmp += "b_without_stopwords = " + str(b_without_stopwords) + "\n"
+                    
 
         str_tmp += "alg runtime = " + str(elapsed_time) + "\n"
                 
@@ -355,8 +411,8 @@ with open('../t3_results_w_wf_compare.txt','w', buffering=1) as fout_t2r:
         
         str_for_statistics += "tmp_mse for training = " + str(tmp_mse) + "\n"
     
-    
-    
+        running_stat_item['mse_for_training'] = tmp_mse	
+            
     
         start_time = time.time()
         
@@ -389,9 +445,18 @@ with open('../t3_results_w_wf_compare.txt','w', buffering=1) as fout_t2r:
         
         str_for_statistics += "tmp_mse for validation = " + str(tmp_mse) + "\n"
         
+        running_stat_item['mse_for_validation'] = tmp_mse
+            
+            
+        stat_data.append(running_stat_item)
+    
+        
         
     
     print(str_for_statistics)
     
     with open('../t3_result_w_wf_compare_stat.txt','w', buffering=1) as fout_t3rs:
         fout_t3rs.write(str_for_statistics)
+        
+    with open("../t3_result_w_wf_compare_stat.json", "w") as wf_json_set:
+        json.dump(stat_data, wf_json_set)
