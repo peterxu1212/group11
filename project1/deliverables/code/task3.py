@@ -264,13 +264,13 @@ with open('../t3_results.txt','w', buffering=1) as fout_t2r:
     
     start_time = time.time()
     
-    W, str_to_write = lr.least_squares_estimate_linear_regression_alg(X_training_set_Adv, Y_training_set_Adv)
+    W_cf, str_to_write = lr.least_squares_estimate_linear_regression_alg(X_training_set_Adv, Y_training_set_Adv)
     #print("lr.least_squares_estimate_linear_regression_alg W = \n", W)
     fout_t2r.write(str_to_write)
     print(str_to_write)
     
     
-    str_to_write = "lr.least_squares_estimate_linear_regression_alg W = \n" + str(W) + "\n"
+    str_to_write = "lr.least_squares_estimate_linear_regression_alg W_cf = \n" + str(W_cf) + "\n"
     
     elapsed_time = time.time() - start_time
     str_to_write += "least_squares_estimate_linear_regression_alg elapsed_time = " + str(elapsed_time) + "\n"
@@ -282,7 +282,7 @@ with open('../t3_results.txt','w', buffering=1) as fout_t2r:
     
     str_for_statistics += "least_squares_estimate_linear_regression_alg:" + "\n\n"
     
-    str_for_statistics += "W = \n" + str(W) + "\n\n"
+    str_for_statistics += "W_cf = \n" + str(W_cf) + "\n\n"
     
     str_for_statistics += "alg runtime = " + str(elapsed_time) + "\n"
     
@@ -291,7 +291,7 @@ with open('../t3_results.txt','w', buffering=1) as fout_t2r:
     
     start_time = time.time()
     
-    est_Y = np.dot(X_training_set_Adv, W)
+    est_Y = np.dot(X_training_set_Adv, W_cf)
     tmp_mse, diff_AB, Sigma_Square_of_diff_AB = lr.mean_squared_error(est_Y, Y_training_set_Adv)
     
     #print("est_Y = \n", est_Y)
@@ -325,7 +325,7 @@ with open('../t3_results.txt','w', buffering=1) as fout_t2r:
     
     start_time = time.time()
     
-    est_Y = np.dot(X_validation_set_Adv, W)
+    est_Y = np.dot(X_validation_set_Adv, W_cf)
     tmp_mse, diff_AB, Sigma_Square_of_diff_AB = lr.mean_squared_error(est_Y, Y_validation_set_Adv)
     
     #print("est_Y = \n", est_Y)
@@ -353,6 +353,49 @@ with open('../t3_results.txt','w', buffering=1) as fout_t2r:
     
     
     str_for_statistics += "tmp_mse for validation = " + str(tmp_mse) + "\n"
+    
+    
+    
+    start_time = time.time()
+    
+    tmp_mse, diff_AB, Sigma_Square_of_diff_AB = lr.mean_squared_error(W_cf, W_cf)
+    
+    #print("est_Y = \n", est_Y)
+    #print("tmp_mse =", tmp_mse)
+    
+    elapsed_time = time.time() - start_time
+    
+    
+    
+    str_to_write = "tmp_mse for weight vector = " + str(tmp_mse) + "\n\n\n\n"
+    str_to_write += "mean_squared_error elapsed_time = " + str(elapsed_time) + "\n"
+        
+    
+    Sigma_Square_of_diff_AB = np.sort(Sigma_Square_of_diff_AB, axis=None, kind='mergesort')
+    str_to_write += "Sigma_Square_of_diff_AB = \n" + str(Sigma_Square_of_diff_AB) + "\n" + str(Sigma_Square_of_diff_AB.shape) + "\n\n"
+
+    
+    str_to_write += "diff_AB = \n" + str(diff_AB) + "\n" + str(diff_AB.shape) + "\n\n\n\n"
+    
+    str_to_write += "W_cf = \n" + str(W_cf) + "\n" + str(W_cf.shape) + "\n"
+    
+    fout_t2r.write(str_to_write)
+    print(str_to_write)
+    
+    
+    
+    str_for_statistics += "tmp_mse for weight vector = " + str(tmp_mse) + "\n"
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     
     # report runtime, MSE and weights, and (stability), w.r.t differet hyperparameters
     
@@ -468,6 +511,43 @@ with open('../t3_results.txt','w', buffering=1) as fout_t2r:
                 
                 
                 str_for_statistics += "tmp_mse for validation = " + str(tmp_mse) + "\n"
+                
+                
+                
+                start_time = time.time()
+    
+                tmp_mse, diff_AB, Sigma_Square_of_diff_AB = lr.mean_squared_error(W_cf, W)
+                
+                #print("est_Y = \n", est_Y)
+                #print("tmp_mse =", tmp_mse)
+                
+                elapsed_time = time.time() - start_time
+                
+                
+                
+                str_to_write = "tmp_mse for weight vector = " + str(tmp_mse) + "\n\n\n\n"
+                str_to_write += "mean_squared_error elapsed_time = " + str(elapsed_time) + "\n"
+                    
+                
+                Sigma_Square_of_diff_AB = np.sort(Sigma_Square_of_diff_AB, axis=None, kind='mergesort')
+                str_to_write += "Sigma_Square_of_diff_AB = \n" + str(Sigma_Square_of_diff_AB) + "\n" + str(Sigma_Square_of_diff_AB.shape) + "\n\n"
+            
+                
+                str_to_write += "diff_AB = \n" + str(diff_AB) + "\n" + str(diff_AB.shape) + "\n\n\n\n"
+                
+                str_to_write += "W = \n" + str(W) + "\n" + str(W.shape) + "\n"
+                
+                fout_t2r.write(str_to_write)
+                print(str_to_write)
+                
+                
+                
+                str_for_statistics += "tmp_mse for weight vector = " + str(tmp_mse) + "\n"
+                
+    
+                
+                
+                
                 
                   
     print(str_for_statistics)

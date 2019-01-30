@@ -8,8 +8,9 @@ Created on Sat Jan 26 06:28:33 2019
 #import json
 
 import numpy as np
+import re
 
-def generate_wordfeature_and_output(dict_wc, data_set, b_with_word_feature=False, i_word_feature_count=0, b_with_Advanced_feature=False, i_Advanced_feature_count=0):
+def generate_wordfeature_and_output(dict_wc, data_set, b_with_word_feature=False, i_word_feature_count=0, b_with_Advanced_feature=False, i_Advanced_feature_count=0, b_without_punctuation=False):
     
     
     # 3 normal feature, 1 extra column
@@ -63,6 +64,9 @@ def generate_wordfeature_and_output(dict_wc, data_set, b_with_word_feature=False
         if b_with_word_feature:
             str_text = data_point['text']
             
+            if b_without_punctuation:
+                str_text = re.sub(r'[^\w\s]', ' ', str_text)
+            
             word_list = str_text.split()
             
             local_wordcount = {}
@@ -75,7 +79,7 @@ def generate_wordfeature_and_output(dict_wc, data_set, b_with_word_feature=False
                     
             #print("str_text = ", str_text)
             
-            wf_X = np.zeros((160, 1))
+            wf_X = np.zeros((i_word_feature_count, 1))
             #print(X_wf_array)
             #print(X_wf_array.shape)
             

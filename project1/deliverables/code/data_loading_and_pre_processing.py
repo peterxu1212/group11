@@ -1,4 +1,7 @@
+
 import json # we need to use the JSON package to load the data, since the data is stored in JSON format
+
+import re
 
 
 with open("../proj1_data.json", "r") as read_file:
@@ -17,15 +20,23 @@ with open("../proj1_data.json", "r") as read_file:
 # pre-process text field to lower case
 # And generate word counts
 
+s = "string. With. Punctuation?"
+s = re.sub(r'[^\w\s]','',s)
+
+
+str_output = ""
 
 wordcount = {}
+
+wordcount_without_punctuation = {}
     
 for data_point in data:
     str_text = data_point['text']
     str_text_lc = str_text.lower()
     
-    #*** to do: deal with punctuation marks?
+       
     word_list = str_text_lc.split()
+    
     
     for word in word_list:
         if word not in wordcount:
@@ -33,11 +44,26 @@ for data_point in data:
         else:
             wordcount[word] += 1
     
+    #***deal with punctuation marks?    
+    str_text_lc_without_punctuation = re.sub(r'[^\w\s]', ' ', str_text_lc)
+    
+    #if str_text_lc_without_punctuation != str_text_lc:
+        #print(str_text_lc_without_punctuation, " is different from ", str_text_lc)
+        #str_output += 
+    
+    word_list_without_punctuation = str_text_lc_without_punctuation.split()
+    
+    for word_wo_punctation in word_list_without_punctuation:
+        if word_wo_punctation not in wordcount_without_punctuation:
+            wordcount_without_punctuation[word_wo_punctation] = 1
+        else:
+            wordcount_without_punctuation[word_wo_punctation] += 1
+    
+    
     data_point['text'] = str_text_lc
 
 
 wordcount = sorted(wordcount.items(), key = lambda x:x[1], reverse=True)
-
 
 with open('../words.txt','w') as fout_words:
     for k, v in wordcount[:160]:
@@ -45,6 +71,49 @@ with open('../words.txt','w') as fout_words:
         str_to_write = k + " " + str(v) + "\n"
         fout_words.write(str_to_write)
 
+
+with open('../words_300.txt','w') as fout_words:
+    for k, v in wordcount[:300]:
+        print(k, v)
+        str_to_write = k + " " + str(v) + "\n"
+        fout_words.write(str_to_write)
+
+
+with open('../words_160.txt','w') as fout_words:
+    for k, v in wordcount[:160]:
+        print(k, v)
+        str_to_write = k + " " + str(v) + "\n"
+        fout_words.write(str_to_write)
+
+with open('../words_60.txt','w') as fout_words:
+    for k, v in wordcount[:60]:
+        print(k, v)
+        str_to_write = k + " " + str(v) + "\n"
+        fout_words.write(str_to_write)
+
+
+wordcount_without_punctuation = sorted(wordcount_without_punctuation.items(), key = lambda x:x[1], reverse=True)
+
+with open('../words_300_without_punctuation.txt','w') as fout_words_wo_punctuation:
+    for k, v in wordcount_without_punctuation[:300]:
+        print(k, v)
+        str_to_write = k + " " + str(v) + "\n"
+        fout_words_wo_punctuation.write(str_to_write)
+
+
+
+with open('../words_160_without_punctuation.txt','w') as fout_words_wo_punctuation:
+    for k, v in wordcount_without_punctuation[:160]:
+        print(k, v)
+        str_to_write = k + " " + str(v) + "\n"
+        fout_words_wo_punctuation.write(str_to_write)
+
+
+with open('../words_60_without_punctuation.txt','w') as fout_words_wo_punctuation:
+    for k, v in wordcount_without_punctuation[:60]:
+        print(k, v)
+        str_to_write = k + " " + str(v) + "\n"
+        fout_words_wo_punctuation.write(str_to_write)
 
 
 # Split the data
