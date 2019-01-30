@@ -51,9 +51,18 @@ def least_squares_estimate_linear_regression_alg(in_X, in_Y):
     
     print(str_tmp)
     
-    
-    XtX_inv = np.linalg.inv(XtX)
-    #print ("XtX_inv = \n", XtX_inv)
+    try:
+        
+        XtX_inv = np.linalg.inv(XtX)
+        #print ("XtX_inv = \n", XtX_inv)
+    except Exception as e:
+        
+        str_tmp = "least_squares_estimate_linear_regression_alg Exception e = " + str(e) + " when execute np.linalg.inv for XtX = \n\n" + str(XtX) +  "\n\n"
+        str_output += str_tmp
+        
+        print(str_tmp)
+        return np.array([]), str_output
+        
     
     et = time.time() - st
     
@@ -93,7 +102,7 @@ def least_squares_estimate_linear_regression_alg(in_X, in_Y):
 
 #def gradient_descent_linear_regression_alg(in_X, in_Y, epsilon = 10**-6, beta_i = 10**-3, eta_0 = 10**-5):
     
-def gradient_descent_linear_regression_alg(in_X, in_Y, epsilon = 10**-6, eta_0 = 10**-1, distance_rate_power=4.0):
+def gradient_descent_linear_regression_alg(in_X, in_Y, epsilon = 10**-6, eta_0 = 10**-1, distance_rate_power=4.0, T_huge_enough = 2000):
 
     #print("in_X = \n", in_X)
     #print("in_Y = \n", in_Y)
@@ -162,6 +171,7 @@ def gradient_descent_linear_regression_alg(in_X, in_Y, epsilon = 10**-6, eta_0 =
     print("beta_i = ", beta_i)   
     print("alpha_i = ", alpha_i)
     print("distance_rate_power = ", distance_rate_power)
+    print("T_huge_enough = ", T_huge_enough)
     
     print("T_k = ", T_k)
    
@@ -170,6 +180,10 @@ def gradient_descent_linear_regression_alg(in_X, in_Y, epsilon = 10**-6, eta_0 =
     str_output += "beta_i = " + str(beta_i) + "\n"
     str_output += "alpha_i = " + str(alpha_i) + "\n"
     str_output += "distance_rate_power = " + str(distance_rate_power) + "\n"
+    str_output += "T_huge_enough = " + str(T_huge_enough) + "\n"
+    
+    
+    
     str_output += "\n\n"
     
     str_output += "T_k = " + str(T_k) + "\n\n"
@@ -327,12 +341,14 @@ def gradient_descent_linear_regression_alg(in_X, in_Y, epsilon = 10**-6, eta_0 =
     str_output += "eta_0 = " + str(eta_0) + "\n"
     str_output += "epsilon = " + str(epsilon) + "\n"    
     str_output += "distance_rate_power = " + str(distance_rate_power) + "\n"
+    str_output += "T_huge_enough = " + str(T_huge_enough) + "\n"
+    
     
     str_output += "\n\n"
     
     str_output += "T_k = " + str(T_k) + "\n\n"
     
-    return W_i, str_output
+    return W_i, str_output, i
 
 
 """
@@ -568,7 +584,8 @@ def gradient_descent_linear_regression_alg_old(in_X, in_Y, epsilon = 10**-6, eta
 
 
         i += 1
-    return W_i, str_output
+        
+    return W_i, str_output, i
 
 
 

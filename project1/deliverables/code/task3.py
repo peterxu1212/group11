@@ -18,6 +18,10 @@ import time
 import json # we need to use the JSON package to load the data, since the data is stored in JSON format
 
 
+stat_data = []
+
+
+
 #def 
 
 str_for_statistics = ""
@@ -29,6 +33,7 @@ with open('../t3_results.txt','w', buffering=1) as fout_t2r:
     #str_to_write = k + " " + str(v) + "\n"
     #fout_t2r.write(str_to_write)
 
+    """
     #X = np.array([[0.86, 1], [0.09, 1], [-0.85, 1], [0.87, 1], [-0.44, 1], [-0.43, 1], [-1.10, 1], [0.40, 1], [-0.96, 1], [0.17, 1]])
     #X = np.array([[0.86], [0.09], [-0.85], [0.87], [-0.44], [-0.43], [-1.10], [0.40], [-0.96], [0.17]])
     
@@ -90,6 +95,7 @@ with open('../t3_results.txt','w', buffering=1) as fout_t2r:
     
     fout_t2r.write(str_to_write)
     print(str_to_write)
+    """
     
 
 
@@ -124,6 +130,10 @@ with open('../t3_results.txt','w', buffering=1) as fout_t2r:
 
     X_validation_set_Adv = np.array([])
     Y_validation_set_Adv = np.array([])
+    
+    
+    running_stat_item = {}
+    
 
     start_time = time.time()
 
@@ -156,6 +166,8 @@ with open('../t3_results.txt','w', buffering=1) as fout_t2r:
     
     
     elapsed_time = time.time() - start_time
+    
+    
     #print("lr.least_squares_estimate_linear_regression_alg W = \n", W)
     #print("elapsed_time = ", elapsed_time)
     
@@ -282,11 +294,15 @@ with open('../t3_results.txt','w', buffering=1) as fout_t2r:
     
     str_for_statistics += "least_squares_estimate_linear_regression_alg:" + "\n\n"
     
+    running_stat_item['desc'] = "least_squares_estimate_linear_regression_alg"
+    
     str_for_statistics += "W_cf = \n" + str(W_cf) + "\n\n"
+    
+    running_stat_item['W'] = str(W_cf)
     
     str_for_statistics += "alg runtime = " + str(elapsed_time) + "\n"
     
-    
+    running_stat_item['alg_runtime'] = elapsed_time
     
     
     start_time = time.time()
@@ -319,7 +335,7 @@ with open('../t3_results.txt','w', buffering=1) as fout_t2r:
     
     str_for_statistics += "tmp_mse for training = " + str(tmp_mse) + "\n"
     
-    
+    running_stat_item['mse_for_training'] = tmp_mse
     
     
     
@@ -354,6 +370,8 @@ with open('../t3_results.txt','w', buffering=1) as fout_t2r:
     
     str_for_statistics += "tmp_mse for validation = " + str(tmp_mse) + "\n"
     
+    running_stat_item['mse_for_validation'] = tmp_mse
+    
     
     
     start_time = time.time()
@@ -386,10 +404,25 @@ with open('../t3_results.txt','w', buffering=1) as fout_t2r:
     
     str_for_statistics += "tmp_mse for weight vector = " + str(tmp_mse) + "\n"
     
+        
+    running_stat_item['mse_for_weight_vector'] = tmp_mse
     
     
     
+    running_stat_item['total_execute_steps'] = 1
     
+	
+    running_stat_item['epsilon_power'] = 1
+    running_stat_item['eta_power'] = 1
+    running_stat_item['T_Robbins_Monroe_pow'] = 0
+
+    
+    running_stat_item['distance_rate_power'] = -1
+    running_stat_item['T_huge_enough'] = -1
+                    
+    
+    
+    stat_data.append(running_stat_item)
     
     
     
@@ -399,6 +432,8 @@ with open('../t3_results.txt','w', buffering=1) as fout_t2r:
     
     # report runtime, MSE and weights, and (stability), w.r.t differet hyperparameters
     
+   
+    # T_huge_enough
     
     # -3 ~ -8
     epsilon_power = -2
@@ -409,144 +444,171 @@ with open('../t3_results.txt','w', buffering=1) as fout_t2r:
     # 2 ~ 5 
     distance_rate_power = 4
     
-    for distance_rate_power in range(3, 7, 1):
-       
-        for eta_power in range(0, -4, -1): 
-        #for eta_power in range(0, -4, -1):
+    #for T_huge_enough in (1000,):
+    for T_huge_enough in (1000, 5000, 20000):
         
-            #for epsilon_power in range(-5, -10, -1):
-            for epsilon_power in range(-4, -8, -1):
+        for distance_rate_power in range(3, 8, 1):
+           
+            for eta_power in range(0, -4, -1): 
+            #for eta_power in range(0, -4, -1):
             
-                #print("\n\n\n\n")
+                #for epsilon_power in range(-5, -10, -1):
+                for epsilon_power in range(-4, -12, -1):
                 
-                str_to_write = "\n\n\n\n"
-        
-                fout_t2r.write(str_to_write)
-                print(str_to_write)
-                
-                
-                start_time = time.time()
-                
-                W, str_to_write = lr.gradient_descent_linear_regression_alg(X_training_set_Adv, Y_training_set_Adv, 10**epsilon_power, 10**eta_power, distance_rate_power)
-                
-                fout_t2r.write(str_to_write)
-                print(str_to_write)
-                
-                #print("lr.gradient_descent_linear_regression_alg W = \n", W)
-                
-                str_to_write = "lr.gradient_descent_linear_regression_alg W = \n" + str(W) + "\n"
-        
-                fout_t2r.write(str_to_write)
-                print(str_to_write)
-                
-                elapsed_time = time.time() - start_time
-            
-                #print("elapsed_time = ", elapsed_time)
-                
-                
-                str_for_statistics += "\n\n\n\n\n\n"
-                
-                str_for_statistics += "gradient_descent_linear_regression_alg:" + "\n\n"
-                
-                
-                
-                str_for_statistics += "epsilon_power = " + str(epsilon_power) + "\n"                
-                str_for_statistics += "eta_power = " + str(eta_power) + "\n"                
-                str_for_statistics += "distance_rate_power = " + str(distance_rate_power) + "\n"
-                
-                str_for_statistics += "W = \n" + str(W) + "\n\n"
-    
-                str_for_statistics += "alg runtime = " + str(elapsed_time) + "\n"
-                
-                
-                
-                est_Y = np.dot(X_training_set_Adv, W)
-                tmp_mse, diff_AB, Sigma_Square_of_diff_AB = lr.mean_squared_error(est_Y, Y_training_set_Adv)
-                
-                #print("est_Y = \n", est_Y)
-                #print("tmp_mse =", tmp_mse)
-                
-                str_to_write = "elapsed_time = " + str(elapsed_time) + "\n"
-                str_to_write += "tmp_mse for training set = " + str(tmp_mse) + "\n\n\n\n"
-        
-                Sigma_Square_of_diff_AB = np.sort(Sigma_Square_of_diff_AB, axis=None, kind='mergesort')
-                str_to_write += "Sigma_Square_of_diff_AB = \n" + str(Sigma_Square_of_diff_AB) + "\n" + str(Sigma_Square_of_diff_AB.shape) + "\n\n"
-        
-                
-                str_to_write += "diff_AB = \n" + str(diff_AB) + "\n" + str(diff_AB.shape) + "\n\n\n\n"
-                
-                str_to_write += "est_Y = \n" + str(est_Y) + "\n"
-                
-                
-                fout_t2r.write(str_to_write)
-                print(str_to_write)
-                
-                
-                
-                str_for_statistics += "tmp_mse for training = " + str(tmp_mse) + "\n"
-                
-                
-                
-                est_Y = np.dot(X_validation_set_Adv, W)
-                tmp_mse, diff_AB, Sigma_Square_of_diff_AB = lr.mean_squared_error(est_Y, Y_validation_set_Adv)
-                
-                #print("est_Y = \n", est_Y)
-                #print("tmp_mse =", tmp_mse)
-                
-                str_to_write = "elapsed_time = " + str(elapsed_time) + "\n"
-                str_to_write += "tmp_mse for validation set = " + str(tmp_mse) + "\n\n\n\n"
-        
-                Sigma_Square_of_diff_AB = np.sort(Sigma_Square_of_diff_AB, axis=None, kind='mergesort')
-                str_to_write += "Sigma_Square_of_diff_AB = \n" + str(Sigma_Square_of_diff_AB) + "\n" + str(Sigma_Square_of_diff_AB.shape) + "\n\n"
-        
-                
-                str_to_write += "diff_AB = \n" + str(diff_AB) + "\n" + str(diff_AB.shape) + "\n\n\n\n"
-                
-                str_to_write += "est_Y = \n" + str(est_Y) + "\n"
-                
-                
-                fout_t2r.write(str_to_write)
-                print(str_to_write)
-                
-                
-                
-                str_for_statistics += "tmp_mse for validation = " + str(tmp_mse) + "\n"
-                
-                
-                
-                start_time = time.time()
-    
-                tmp_mse, diff_AB, Sigma_Square_of_diff_AB = lr.mean_squared_error(W_cf, W)
-                
-                #print("est_Y = \n", est_Y)
-                #print("tmp_mse =", tmp_mse)
-                
-                elapsed_time = time.time() - start_time
-                
-                
-                
-                str_to_write = "tmp_mse for weight vector = " + str(tmp_mse) + "\n\n\n\n"
-                str_to_write += "mean_squared_error elapsed_time = " + str(elapsed_time) + "\n"
+                    #print("\n\n\n\n")
                     
-                
-                Sigma_Square_of_diff_AB = np.sort(Sigma_Square_of_diff_AB, axis=None, kind='mergesort')
-                str_to_write += "Sigma_Square_of_diff_AB = \n" + str(Sigma_Square_of_diff_AB) + "\n" + str(Sigma_Square_of_diff_AB.shape) + "\n\n"
+                    str_to_write = "\n\n\n\n"
             
+                    fout_t2r.write(str_to_write)
+                    print(str_to_write)
+                    
+                    
+                    start_time = time.time()
+                    
+                    W, str_to_write, i_total_execute_steps = lr.gradient_descent_linear_regression_alg(X_training_set_Adv, Y_training_set_Adv, 10**epsilon_power, 10**eta_power, distance_rate_power)
+                    
+                    fout_t2r.write(str_to_write)
+                    print(str_to_write)
+                    
+                    #print("lr.gradient_descent_linear_regression_alg W = \n", W)
+                    
+                    str_to_write = "lr.gradient_descent_linear_regression_alg W = \n" + str(W) + "\n"
+            
+                    fout_t2r.write(str_to_write)
+                    print(str_to_write)
+                    
+                    elapsed_time = time.time() - start_time
                 
-                str_to_write += "diff_AB = \n" + str(diff_AB) + "\n" + str(diff_AB.shape) + "\n\n\n\n"
-                
-                str_to_write += "W = \n" + str(W) + "\n" + str(W.shape) + "\n"
-                
-                fout_t2r.write(str_to_write)
-                print(str_to_write)
-                
-                
-                
-                str_for_statistics += "tmp_mse for weight vector = " + str(tmp_mse) + "\n"
-                
+                    #print("elapsed_time = ", elapsed_time)
+                    
+                    running_stat_item = {}
+                    
+                    str_for_statistics += "\n\n\n\n\n\n"
+                    
+                    str_for_statistics += "gradient_descent_linear_regression_alg:" + "\n\n"
+                    
+                    running_stat_item['desc'] = "gradient_descent_linear_regression_alg"
     
+                    
+                    str_for_statistics += "epsilon_power = " + str(epsilon_power) + "\n"                
+                    str_for_statistics += "eta_power = " + str(eta_power) + "\n"                
+                    str_for_statistics += "distance_rate_power = " + str(distance_rate_power) + "\n"                    
+                    str_for_statistics += "T_huge_enough = " + str(T_huge_enough) + "\n"
+                    
+                    
+                    
+                    running_stat_item['epsilon_power'] = epsilon_power
+                    running_stat_item['eta_power'] = eta_power
+                                       
+                    
+                    running_stat_item['distance_rate_power'] = distance_rate_power
+                    running_stat_item['T_huge_enough'] = T_huge_enough
+                    
+                    
+                    running_stat_item['T_Robbins_Monroe_pow'] = 0
+
+                    
+                    
+                    str_for_statistics += "W = \n" + str(W) + "\n\n"
+                    
+                    running_stat_item['W'] = str(W)
+                    
+                    str_for_statistics += "\n\n i_total_execute_steps = " + str(i_total_execute_steps) + "\n\n"
+                           
+                    running_stat_item['total_execute_steps'] = i_total_execute_steps
+                    
+                    str_for_statistics += "alg runtime = " + str(elapsed_time) + "\n"
+                                       
+                    running_stat_item['alg_runtime'] = elapsed_time
+                    
+                    est_Y = np.dot(X_training_set_Adv, W)
+                    tmp_mse, diff_AB, Sigma_Square_of_diff_AB = lr.mean_squared_error(est_Y, Y_training_set_Adv)
+                    
+                    #print("est_Y = \n", est_Y)
+                    #print("tmp_mse =", tmp_mse)
+                    
+                    str_to_write = "elapsed_time = " + str(elapsed_time) + "\n"
+                    str_to_write += "tmp_mse for training set = " + str(tmp_mse) + "\n\n\n\n"
+            
+                    Sigma_Square_of_diff_AB = np.sort(Sigma_Square_of_diff_AB, axis=None, kind='mergesort')
+                    str_to_write += "Sigma_Square_of_diff_AB = \n" + str(Sigma_Square_of_diff_AB) + "\n" + str(Sigma_Square_of_diff_AB.shape) + "\n\n"
+            
+                    
+                    str_to_write += "diff_AB = \n" + str(diff_AB) + "\n" + str(diff_AB.shape) + "\n\n\n\n"
+                    
+                    str_to_write += "est_Y = \n" + str(est_Y) + "\n"
+                    
+                    
+                    fout_t2r.write(str_to_write)
+                    print(str_to_write)
+                    
+                    
+                    
+                    str_for_statistics += "tmp_mse for training = " + str(tmp_mse) + "\n"
+                    
+                    running_stat_item['mse_for_training'] = tmp_mse
+                    
+                    est_Y = np.dot(X_validation_set_Adv, W)
+                    tmp_mse, diff_AB, Sigma_Square_of_diff_AB = lr.mean_squared_error(est_Y, Y_validation_set_Adv)
+                    
+                    #print("est_Y = \n", est_Y)
+                    #print("tmp_mse =", tmp_mse)
+                    
+                    str_to_write = "elapsed_time = " + str(elapsed_time) + "\n"
+                    str_to_write += "tmp_mse for validation set = " + str(tmp_mse) + "\n\n\n\n"
+            
+                    Sigma_Square_of_diff_AB = np.sort(Sigma_Square_of_diff_AB, axis=None, kind='mergesort')
+                    str_to_write += "Sigma_Square_of_diff_AB = \n" + str(Sigma_Square_of_diff_AB) + "\n" + str(Sigma_Square_of_diff_AB.shape) + "\n\n"
+            
+                    
+                    str_to_write += "diff_AB = \n" + str(diff_AB) + "\n" + str(diff_AB.shape) + "\n\n\n\n"
+                    
+                    str_to_write += "est_Y = \n" + str(est_Y) + "\n"
+                    
+                    
+                    fout_t2r.write(str_to_write)
+                    print(str_to_write)
+                    
+                    
+                    
+                    str_for_statistics += "tmp_mse for validation = " + str(tmp_mse) + "\n"
+                    
+                    running_stat_item['mse_for_validation'] = tmp_mse
+                    
+                    start_time = time.time()
+        
+                    tmp_mse, diff_AB, Sigma_Square_of_diff_AB = lr.mean_squared_error(W_cf, W)
+                    
+                    #print("est_Y = \n", est_Y)
+                    #print("tmp_mse =", tmp_mse)
+                    
+                    elapsed_time = time.time() - start_time
+                    
+                    
+                    
+                    str_to_write = "tmp_mse for weight vector = " + str(tmp_mse) + "\n\n\n\n"
+                    str_to_write += "mean_squared_error elapsed_time = " + str(elapsed_time) + "\n"
+                        
+                    
+                    Sigma_Square_of_diff_AB = np.sort(Sigma_Square_of_diff_AB, axis=None, kind='mergesort')
+                    str_to_write += "Sigma_Square_of_diff_AB = \n" + str(Sigma_Square_of_diff_AB) + "\n" + str(Sigma_Square_of_diff_AB.shape) + "\n\n"
                 
+                    
+                    str_to_write += "diff_AB = \n" + str(diff_AB) + "\n" + str(diff_AB.shape) + "\n\n\n\n"
+                    
+                    str_to_write += "W = \n" + str(W) + "\n" + str(W.shape) + "\n"
+                    
+                    fout_t2r.write(str_to_write)
+                    print(str_to_write)
+                                        
+                    
+                    str_for_statistics += "tmp_mse for weight vector = " + str(tmp_mse) + "\n"
                 
+                    
+                    running_stat_item['mse_for_weight_vector'] = tmp_mse
+                
+                    
+                    stat_data.append(running_stat_item)
                 
                 
                   
@@ -576,7 +638,7 @@ with open('../t3_results.txt','w', buffering=1) as fout_t2r:
         #for eta_power in range(0, -4, -1):
         
             #for epsilon_power in range(-5, -10, -1):
-            for epsilon_power in range(-3, -9, -1):
+            for epsilon_power in range(-3, -12, -1):
             
                 #print("\n\n\n\n")
                 
@@ -590,7 +652,7 @@ with open('../t3_results.txt','w', buffering=1) as fout_t2r:
                 
                 #W, str_to_write = lr.gradient_descent_linear_regression_alg_old(X_training_set_Adv, Y_training_set_Adv, 10**epsilon_power, 10**eta_power, distance_rate_power)
                 
-                W, str_to_write = lr.gradient_descent_linear_regression_alg_old(X_training_set_Adv, Y_training_set_Adv, 10**epsilon_power, 10**eta_power, 10**T_Robbins_Monroe_pow)
+                W, str_to_write, i_total_execute_steps = lr.gradient_descent_linear_regression_alg_old(X_training_set_Adv, Y_training_set_Adv, 10**epsilon_power, 10**eta_power, 10**T_Robbins_Monroe_pow)
                 
                 fout_t2r.write(str_to_write)
                 print(str_to_write)
@@ -606,21 +668,41 @@ with open('../t3_results.txt','w', buffering=1) as fout_t2r:
             
                 #print("elapsed_time = ", elapsed_time)
                 
+                running_stat_item = {}
+                
+                
+                #stat_data.append(running_stat_item)
                 
                 str_for_statistics += "\n\n\n\n\n\n"
                 
                 str_for_statistics += "gradient_descent_linear_regression_alg_old:" + "\n\n"
                 
-                
+                running_stat_item['desc'] = "gradient_descent_linear_regression_alg_old"
                 
                 str_for_statistics += "epsilon_power = " + str(epsilon_power) + "\n"                
                 str_for_statistics += "eta_power = " + str(eta_power) + "\n"                
                 str_for_statistics += "T_Robbins_Monroe_pow = " + str(T_Robbins_Monroe_pow) + "\n"
                 
+                running_stat_item['epsilon_power'] = epsilon_power
+                running_stat_item['eta_power'] = eta_power
+                running_stat_item['T_Robbins_Monroe_pow'] = T_Robbins_Monroe_pow
+                
+                
+                running_stat_item['distance_rate_power'] = -1
+                running_stat_item['T_huge_enough'] = -1
+                
+                
                 str_for_statistics += "W = \n" + str(W) + "\n\n"
+                
+                running_stat_item['W'] = str(W)
+                
+                str_for_statistics += "\n\n i_total_execute_steps = " + str(i_total_execute_steps) + "\n\n"
+                
+                running_stat_item['total_execute_steps'] = i_total_execute_steps
     
                 str_for_statistics += "alg runtime = " + str(elapsed_time) + "\n"
-                
+                                
+                running_stat_item['alg_runtime'] = elapsed_time
                 
                 
                 est_Y = np.dot(X_training_set_Adv, W)
@@ -649,6 +731,7 @@ with open('../t3_results.txt','w', buffering=1) as fout_t2r:
                 str_for_statistics += "tmp_mse for training = " + str(tmp_mse) + "\n"
                 
                 
+                running_stat_item['mse_for_training'] = tmp_mse
                 
                 est_Y = np.dot(X_validation_set_Adv, W)
                 tmp_mse, diff_AB, Sigma_Square_of_diff_AB = lr.mean_squared_error(est_Y, Y_validation_set_Adv)
@@ -674,6 +757,9 @@ with open('../t3_results.txt','w', buffering=1) as fout_t2r:
                 
                 
                 str_for_statistics += "tmp_mse for validation = " + str(tmp_mse) + "\n"
+                
+                
+                running_stat_item['mse_for_validation'] = tmp_mse
                 
                 
                 
@@ -707,9 +793,11 @@ with open('../t3_results.txt','w', buffering=1) as fout_t2r:
                 
                 str_for_statistics += "tmp_mse for weight vector = " + str(tmp_mse) + "\n"
                 
-    
+                
+                running_stat_item['mse_for_weight_vector'] = tmp_mse
                 
                 
+                stat_data.append(running_stat_item)
                 
                 
                   
@@ -717,3 +805,7 @@ with open('../t3_results.txt','w', buffering=1) as fout_t2r:
     
     with open('../t3_result_stat_old.txt','w', buffering=1) as fout_t3rs:
         fout_t3rs.write(str_for_statistics)
+        
+    
+    with open("../task3_stat.json", "w") as wf_json_set:
+        json.dump(stat_data, wf_json_set)

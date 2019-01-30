@@ -20,8 +20,6 @@ with open("../proj1_data.json", "r") as read_file:
 # pre-process text field to lower case
 # And generate word counts
 
-s = "string. With. Punctuation?"
-s = re.sub(r'[^\w\s]','',s)
 
 
 str_output = ""
