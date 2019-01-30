@@ -1,0 +1,201 @@
+
+
+gradient_descent_linear_regression_alg:
+
+epsilon_power = -6
+eta_power = 0
+distance_rate_power = 5
+W = 
+[[-0.22626494]
+ [-1.08411594]
+ [ 0.3753595 ]
+ [ 0.82090148]]
+
+alg runtime = 1.2143032550811768
+tmp_mse for training = 1.0846831055143555
+tmp_mse for validation = 1.020333898803986
+tmp_mse for weight vector = 7.497242125007716e-07
+
+
+gradient_descent_linear_regression_alg:
+
+epsilon_power = -6
+eta_power = -1
+distance_rate_power = 5
+W = 
+[[-0.22626494]
+ [-1.08411575]
+ [ 0.3753595 ]
+ [ 0.82090147]]
+
+alg runtime = 1.4731533527374268
+tmp_mse for training = 1.0846831055222512
+tmp_mse for validation = 1.02033389962981
+tmp_mse for weight vector = 7.498953076124272e-07
+
+
+
+
+
+
+gradient_descent_linear_regression_alg:
+
+epsilon_power = -5
+eta_power = 0
+distance_rate_power = 4
+W = 
+[[-0.22621758]
+ [-1.07719803]
+ [ 0.37534143]
+ [ 0.82080679]]
+
+alg runtime = 0.9044809341430664
+tmp_mse for training = 1.0846839342476768
+tmp_mse for validation = 1.0203631961219863
+tmp_mse for weight vector = 1.8707702072998183e-05
+
+
+
+gradient_descent_linear_regression_alg:
+
+epsilon_power = -5
+eta_power = -1
+distance_rate_power = 4
+W = 
+[[-0.22621758]
+ [-1.07719756]
+ [ 0.37534143]
+ [ 0.82080678]]
+
+alg runtime = 0.8435158729553223
+tmp_mse for training = 1.0846839343405639
+tmp_mse for validation = 1.0203631981180674
+tmp_mse for weight vector = 1.8709714857683654e-05
+
+
+
+
+
+gradient_descent_linear_regression_alg:
+
+epsilon_power = -5
+eta_power = 0
+distance_rate_power = 5
+W = 
+[[-0.22621758]
+ [-1.07719803]
+ [ 0.37534143]
+ [ 0.82080679]]
+
+alg runtime = 0.8784971237182617
+tmp_mse for training = 1.0846839342476768
+tmp_mse for validation = 1.0203631961219863
+tmp_mse for weight vector = 1.8707702072998183e-05
+
+
+
+
+================================================================
+gradient_descent_linear_regression_alg_old:
+
+epsilon_power = -5
+eta_power = 0
+T_Robbins_Monroe_pow = 1
+W = 
+[[-0.22586247]
+ [-1.0253242 ]
+ [ 0.37520595]
+ [ 0.8200968 ]]
+
+alg runtime = 0.2628493309020996
+tmp_mse for training = 1.0847253423311978
+tmp_mse for validation = 1.0206071198047488
+tmp_mse for weight vector = 0.0009159872345155929
+
+
+
+
+
+
+
+
+gradient_descent_linear_regression_alg_old:
+
+epsilon_power = -6
+eta_power = 0
+T_Robbins_Monroe_pow = 1
+W = 
+[[-0.2258689 ]
+ [-1.02626398]
+ [ 0.3752084 ]
+ [ 0.82010966]]
+
+alg runtime = 0.26584672927856445
+tmp_mse for training = 1.084724039780906
+tmp_mse for validation = 1.0206023203093635
+tmp_mse for weight vector = 0.0008877620278059258
+
+
+
+
+
+
+
+gradient_descent_linear_regression_alg_old:
+
+epsilon_power = -8
+eta_power = 0
+T_Robbins_Monroe_pow = 1
+W = 
+[[-0.22586981]
+ [-1.02639633]
+ [ 0.37520875]
+ [ 0.82011147]]
+
+alg runtime = 0.3727884292602539
+tmp_mse for training = 1.0847238579690117
+tmp_mse for validation = 1.0206016454825975
+tmp_mse for weight vector = 0.0008838223117510736
+
+
+
+
+
+
+gradient_descent_linear_regression_alg_old:
+
+epsilon_power = -6
+eta_power = 0
+T_Robbins_Monroe_pow = 6
+W = 
+[[-0.2258689 ]
+ [-1.02626398]
+ [ 0.3752084 ]
+ [ 0.82010966]]
+
+alg runtime = 0.2408616542816162
+tmp_mse for training = 1.084724039780906
+tmp_mse for validation = 1.0206023203093635
+tmp_mse for weight vector = 0.0008877620278059258
+
+
+
+
+
+
+gradient_descent_linear_regression_alg_old:
+
+epsilon_power = -6
+eta_power = 0
+T_Robbins_Monroe_pow = 5
+W = 
+[[-0.2258689 ]
+ [-1.02626398]
+ [ 0.3752084 ]
+ [ 0.82010966]]
+
+alg runtime = 0.3687877655029297
+tmp_mse for training = 1.084724039780906
+tmp_mse for validation = 1.0206023203093635
+tmp_mse for weight vector = 0.0008877620278059258
+
