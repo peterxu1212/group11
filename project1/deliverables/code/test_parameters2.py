@@ -46,10 +46,11 @@ X_validation_set_Adv, Y_validation_set_Adv, str_output = pf.generate_wordfeature
 start_time = time.time()
 
 W_closed, str_to_write = lr.least_squares_estimate_linear_regression_alg(X_validation_set_Adv, Y_validation_set_Adv)
-est_Y = np.dot(X_training_set_Adv, W_closed)
-trn_mse_closed, diff_AB, Sigma_Square_of_diff_AB = lr.mean_squared_error(est_Y, Y_training_set_Adv)
 
 closed_running_time = time.time() - start_time
+
+est_Y = np.dot(X_training_set_Adv, W_closed)
+trn_mse_closed, diff_AB, Sigma_Square_of_diff_AB = lr.mean_squared_error(est_Y, Y_training_set_Adv)
 
 est_Y = np.dot(X_validation_set_Adv, W_closed)
 val_mse_closed, diff_AB, Sigma_Square_of_diff_AB = lr.mean_squared_error(est_Y, Y_validation_set_Adv)
@@ -99,9 +100,11 @@ plt.ylabel("MSE of W")
 plt.title("Plot of MSE of W w.r.t log T")
 plt.show()
 plt.plot(list_T_Robbins_Monroe_pow, list_elapsed_time, "bo")
+plt.plot([1,7],[closed_running_time, closed_running_time])
 plt.xlabel("log T")
 plt.ylabel("Running time")
 plt.title("Plot of running time w.r.t log T")
+plt.legend(["Gradient descent validation running time",'Closed form running time'])
 plt.show()
 #這裏running time會抽風
 
@@ -150,9 +153,11 @@ plt.ylabel("MSE of W")
 plt.title("Plot of MSE of W w.r.t log epsilon")
 plt.show()
 plt.plot(list_epsilon_power, list_elapsed_time, "bo")
+plt.plot([-3, -7], [closed_running_time, closed_running_time])
 plt.xlabel("log epsilon")
 plt.ylabel("Running time")
 plt.title("Plot of running time w.r.t log epsilon")
+plt.legend(["Gradient descent validation running time",'Closed form running time'])
 plt.show()
 
 list_eta_power = []
@@ -199,9 +204,11 @@ plt.xlabel("log eta")
 plt.ylabel("MSE of W")
 plt.show()
 plt.plot(list_eta_power, list_elapsed_time, "bo")
+plt.plot([0, -3], [closed_running_time, closed_running_time])
 plt.xlabel("log eta")
 plt.ylabel("Running time")
 plt.title("Plot of running time w.r.t log eta")
+plt.legend(["Gradient descent validation running time",'Closed form running time'])
 plt.show()
 
 epsilon_power = -5
@@ -262,9 +269,10 @@ plt.legend(["New gradient descent MSE of W", 'Gradient descent MSE of W'])
 plt.title("Plot of MSE of W w.r.t log eta")
 plt.show()
 plt.plot(list_distance_rate_power, list_elapsed_time, "bo")
-plt.plot([2,7],[old_elapsed_time, old_elapsed_time])
+plt.plot([2, 7],[old_elapsed_time, old_elapsed_time])
+plt.plot([2, 7], [closed_running_time, closed_running_time])
 plt.xlabel("log distance rate")
 plt.ylabel("Running time")
 plt.title("Plot of running time w.r.t log log DRP")
-plt.legend(["New gradient descent validation running time", 'Gradient descent running time'])
+plt.legend(["New gradient descent validation running time", 'Gradient descent running time', 'Closed form running time'])
 plt.show()
