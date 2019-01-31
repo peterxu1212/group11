@@ -31,7 +31,7 @@ with open('../t3_results_w_wf_compare.txt','w', buffering=1) as fout_t2r:
     #fout_t2r.write(str_to_write)
 
     
-    for word_file_name in ("words", "words_60", "words_160", "words_260", "words_300", "words_60_wo_punctuation", "words_160_wo_punctuation", "words_260_wo_punctuation", "words_300_wo_punctuation",  "words_60_adv", "words_160_adv", "words_260_adv", "words_300_adv"):
+    for word_file_name in ("words", "words_60", "words_160", "words_60_wo_punctuation", "words_160_wo_punctuation", "words_60_wo_stopwords", "words_160_wo_stopwords", "words_60_adv", "words_160_adv"):
 
         i_len_word_feature = 0
         b_with_wf = False
@@ -47,13 +47,17 @@ with open('../t3_results_w_wf_compare.txt','w', buffering=1) as fout_t2r:
             wlist = word_file_name.split('_')
             
             i_len_word_feature = int(wlist[1])
-                      
+            
             if len(wlist) == 3:
+
                 b_without_punctuation = True
                 b_without_stopwords = True
             elif len(wlist) == 4:
-                b_without_punctuation = True
-                b_without_stopwords = False
+                
+                if wlist[3] == "punctuation":
+                    b_without_punctuation = True
+                elif wlist[3] == "stopwords":
+                    b_without_stopwords = True
         
         
         

@@ -199,45 +199,7 @@ with open('../t3_results.txt','w', buffering=1) as fout_t2r:
     print(str_to_write)
     
     
-    """ 
     
-    start_time = time.time()
-    # your code
-    
-    W, str_to_write = lr.least_squares_estimate_linear_regression_alg(X, Y)
-    
-    fout_t2r.write(str_to_write)
-    print(str_to_write)
-    
-    elapsed_time = time.time() - start_time
-    #print("lr.least_squares_estimate_linear_regression_alg W = \n", W)
-    #print("elapsed_time = ", elapsed_time)
-    
-    str_to_write = "lr.least_squares_estimate_linear_regression_alg W = \n" + str(W) + "\n"
-    str_to_write += "elapsed_time = " + str(elapsed_time) + "\n\n\n\n\n"
-    
-    fout_t2r.write(str_to_write)
-    print(str_to_write)
-    
-    
-    start_time = time.time()
-    
-    W, str_to_write = lr.gradient_descent_linear_regression_alg(X, Y)
-    
-    fout_t2r.write(str_to_write)
-    print(str_to_write)
-    
-    elapsed_time = time.time() - start_time
-    #print("lr.gradient_descent_linear_regression_alg W = \n", W)
-    #print("elapsed_time = ", elapsed_time)
-    
-    str_to_write = "lr.gradient_descent_linear_regression_alg W = \n" + str(W) + "\n"
-    str_to_write += "elapsed_time = " + str(elapsed_time) + "\n"
-    
-    fout_t2r.write(str_to_write)
-    print(str_to_write)
-    
-    """
     
     
     

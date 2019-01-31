@@ -26,6 +26,8 @@ wordcount = {}
 
 wordcount_wo_punctuation = {}
 
+wordcount_wo_sw = {}
+
 wordcount_wo_punctuation_and_sw = {}
     
 for data_point in data:
@@ -41,6 +43,20 @@ for data_point in data:
             wordcount[word] = 1
         else:
             wordcount[word] += 1
+    
+    
+    
+    word_list_without_sw = pf.remove_stop_words(word_list)
+    
+    for word_wo_sw in word_list_without_sw:
+        if word_wo_sw not in wordcount_wo_sw:
+            wordcount_wo_sw[word_wo_sw] = 1
+        else:
+            wordcount_wo_sw[word_wo_sw] += 1
+      
+    
+    
+    
     
     #deal with punctuation marks    
     str_text_lc_without_punctuation = re.sub(r'[^\w\s]', ' ', str_text_lc)   
@@ -100,6 +116,18 @@ for list_size in (300, 260, 160, 60):
     
     with open(words_file_name,'w') as fout_words:
         for k, v in wordcount_wo_punctuation[:list_size]:
+            print(k, v)
+            str_to_write = k + " " + str(v) + "\n"
+            fout_words.write(str_to_write)
+
+
+wordcount_wo_sw = sorted(wordcount_wo_sw.items(), key = lambda x:x[1], reverse=True)
+
+for list_size in (300, 260, 160, 60):
+    words_file_name = '../words_' + str(list_size) + '_wo_stopwords' + '.txt'
+    
+    with open(words_file_name,'w') as fout_words:
+        for k, v in wordcount_wo_sw[:list_size]:
             print(k, v)
             str_to_write = k + " " + str(v) + "\n"
             fout_words.write(str_to_write)

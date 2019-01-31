@@ -50,7 +50,7 @@ def calc_sentence_number_in_comment(str_comment):
 	return sentence_count
 
 
-def generate_wordfeature_and_output(dict_wc, data_set, b_with_word_count_feature=False, i_word_count_feature_count=0, b_with_Advanced_feature=False, i_Advanced_feature_count=0, b_wo_punctuation=False, b_with_total_comment_word_number_feature=False, b_with_total_number_of_sentence_feature=False, b_with_average_word_per_sentence_feature=False, b_with_average_length_per_word_feature=False, b_wo_stopwords=False):
+def generate_wordfeature_and_output(dict_wc, data_set, b_with_word_count_feature=False, i_word_count_feature_count=0, b_with_Advanced_feature=False, i_Advanced_feature_count=0, b_wo_punctuation=False, b_with_total_comment_word_number_feature=False, b_with_total_number_of_sentence_feature=False, b_with_average_word_per_sentence_feature=False, b_with_average_length_per_word_feature=False, b_wo_stopwords=False, b_adv_feature_replace_original_feature=False, i_advanced_feature_power=1):
     
     
     # 3 normal feature, 1 extra column
@@ -61,6 +61,9 @@ def generate_wordfeature_and_output(dict_wc, data_set, b_with_word_count_feature
         
     if b_with_Advanced_feature:    
         i_feature_count += i_Advanced_feature_count
+        if b_adv_feature_replace_original_feature:
+            i_feature_count -= 1
+		
     
     
     if b_with_total_comment_word_number_feature:
@@ -89,6 +92,15 @@ def generate_wordfeature_and_output(dict_wc, data_set, b_with_word_count_feature
     str_output += "  b_with_total_number_of_sentence_feature = " + str(b_with_total_number_of_sentence_feature) + "\n"	
     str_output += "  b_with_average_word_per_sentence_feature = " + str(b_with_average_word_per_sentence_feature) + "\n"
     str_output += "  b_with_average_length_per_word_feature = " + str(b_with_average_length_per_word_feature) + "\n"
+    
+    str_output += "\n\n"  
+    str_output += "  b_with_Advanced_feature = " + str(b_with_Advanced_feature) + "\n"
+	
+    str_output += "  b_adv_feature_replace_original_feature = " + str(b_adv_feature_replace_original_feature) + "\n"
+	
+    str_output += "  i_advanced_feature_power = " + str(i_advanced_feature_power) + "\n"
+	
+	
     
     str_output += "\n\n"
 	
@@ -135,8 +147,22 @@ def generate_wordfeature_and_output(dict_wc, data_set, b_with_word_count_feature
         #X_training_set = np.array([[, 0.86, 1]])
         
         X_entry = np.array([])
+		
+        X_entry = np.append(X_entry, [[f_is_root, f_controversiality]])
         
-        X_entry = np.append(X_entry, [[f_is_root, f_controversiality, f_children]])
+		
+        if b_with_Advanced_feature:            
+            X_entry = np.append(X_entry, [[f_children**i_advanced_feature_power]])
+			
+            if not b_adv_feature_replace_original_feature:
+                X_entry = np.append(X_entry, [[f_children]])
+        else:
+            X_entry = np.append(X_entry, [[f_children]])
+			
+       
+		#X_entry = np.append(X_entry, [[f_is_root, f_controversiality, f_children]])
+         	
+            
     
         if b_with_word_count_feature:
             str_text = data_point['text']
