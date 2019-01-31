@@ -292,7 +292,7 @@ with open('../t3_results_w_wf_compare.txt','w', buffering=1) as fout_t2r:
             
             running_stat_item['mse_for_training'] = 99999	
             running_stat_item['mse_for_validation'] = 99999
-            
+            running_stat_item['mse_for_testing'] = 99999
             
             stat_data.append(running_stat_item)
             
