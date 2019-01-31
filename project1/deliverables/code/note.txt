@@ -3,7 +3,9 @@ task #1:
     execute data_loading_and_pre_processing.py
         
 task #2:
-    implemented in linear_regression.py, do not execute
+    implemented in linear_regression.py
     
 task #3:
-    execute task3.py
+    execute task3.py, for the comparsion between closed form alg and gradient descent alg with vary hyperparameters
+    execute task3_w_wf_compare.py, for the comparsion between the model with high frequency word count feature and the model without
+    execute task3_w_wf_additional_compare, to test the new added features
