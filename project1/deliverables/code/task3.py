@@ -144,7 +144,7 @@ with open('../t3_results.txt','w', buffering=1) as fout_t2r:
         data = json.load(rf_training_set)
         
       
-    X_training_set_Adv, Y_training_set_Adv = pf.generate_wordfeature_and_output(wordcount, data, False, 0, False, 0)
+    X_training_set_Adv, Y_training_set_Adv, str_output = pf.generate_wordfeature_and_output(wordcount, data, False, 0, False, 0)
     
 
     #X_training_set_Adv, Y_training_set_Adv = pf.generate_wordfeature_and_output(wordcount, data, True, 160, False, 0)
@@ -160,6 +160,8 @@ with open('../t3_results.txt','w', buffering=1) as fout_t2r:
     str_to_write += "X_training_set_Adv = \n" + str(X_training_set_Adv) + "\n" + str(X_training_set_Adv.shape) + "\n"
     
     str_to_write += "Y_training_set_Adv = \n" + str(Y_training_set_Adv) + "\n" + str(Y_training_set_Adv.shape) + "\n"
+    
+    str_to_write += str_output
     
     fout_t2r.write(str_to_write)
     print(str_to_write)
@@ -187,7 +189,7 @@ with open('../t3_results.txt','w', buffering=1) as fout_t2r:
         data = json.load(rf_validation_set)
         
       
-    X_validation_set_Adv, Y_validation_set_Adv = pf.generate_wordfeature_and_output(wordcount, data, False, 0, False, 0)
+    X_validation_set_Adv, Y_validation_set_Adv, str_output = pf.generate_wordfeature_and_output(wordcount, data, False, 0, False, 0)
     
 
     #X_training_set_Adv, Y_training_set_Adv = pf.generate_wordfeature_and_output(wordcount, data, True, 160, False, 0)
@@ -203,6 +205,8 @@ with open('../t3_results.txt','w', buffering=1) as fout_t2r:
     str_to_write += "X_validation_set_Adv = \n" + str(X_validation_set_Adv) + "\n" + str(X_validation_set_Adv.shape) + "\n"
     
     str_to_write += "Y_validation_set_Adv = \n" + str(Y_validation_set_Adv) + "\n" + str(Y_validation_set_Adv.shape) + "\n"
+    
+    str_to_write += str_output
     
     fout_t2r.write(str_to_write)
     print(str_to_write)
