@@ -1,0 +1,14 @@
+\begin{thebibliography}{}
+
+\bibitem[\UnexpandableProtect\SCcite{Domingos}{2012}]{domingos2012few}
+Domingos, Pedro.
+\newblock 2012.
+\newblock \Wrapquotes{A few useful things to know about machine learning}.
+\newblock \textitswitch{Communications of the ACM}  55 (10): 78--87.
+
+\bibitem[\UnexpandableProtect\SCcite{Rohlin}{2016}]{rohlin2016popularity}
+Rohlin, Tracy.
+\newblock 2016.
+\newblock \Wrapquotes{Popularity prediction of Reddit texts}.
+
+\end{thebibliography}
